@@ -1,5 +1,5 @@
 // Guarda o jogo no aparelho para funcionar sem internet.
-const CACHE = 'top10-v1';
+const CACHE = 'top10-v2';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {

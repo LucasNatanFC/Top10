@@ -130,6 +130,13 @@ input[type=text]::placeholder{color:var(--muted);opacity:.8}
 .tc-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--ink);border-radius:999px;padding:8px 13px;min-height:40px;font-weight:600;font-size:14px}
 .tc-btn svg{width:17px;height:17px}
 .tc-btn.judge{border-color:var(--accent);color:var(--accent)}
+.tsearch{position:sticky;top:-20px;background:var(--panel);padding-block:4px 8px;z-index:1}
+.tgroup{display:flex;flex-direction:column;gap:6px}
+.tgroup h3{margin:6px 0 0;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.tpick{width:100%;display:flex;align-items:center;gap:10px;text-align:left;border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:10px 12px;min-height:50px;font-weight:600;font-size:15px}
+.tpick span{flex:1;min-width:0;overflow-wrap:anywhere}
+.tpick small{flex:none;font-size:11.5px;font-weight:500;color:var(--muted)}
+.tpick.cur{border-color:var(--accent)}
 .judge-tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
 .board{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(5,auto);grid-auto-flow:column;gap:8px}
 .slot{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:7px 10px 7px 6px;min-height:48px;min-width:0}
@@ -379,6 +386,7 @@ const I = {
   glass:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16l-8 9z"/><path d="M12 13v7M8 20h8"/><path d="M15.5 4 18 1.5"/></svg>',
   eye:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
   skip:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l9 7-9 7z"/><path d="M19 5v14"/></svg>',
+  list:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2" fill="currentColor"/><circle cx="4.5" cy="12" r="1.2" fill="currentColor"/><circle cx="4.5" cy="18" r="1.2" fill="currentColor"/></svg>',
   crown:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/><path d="M5 19h14"/></svg>'
 };
 
@@ -421,10 +429,19 @@ function drawTop(){
   S.used.push(pick.id); savePrefs();
   return pick.id;
 }
-function newRound(keepNumber){
+function newRound(keepNumber, forcedId){
   if(!keepNumber) S.roundNo++;
   const starter=S.players[S.starterIdx % S.players.length].id;
-  S.R={topId:drawTop(), active:S.players.map(p=>p.id), out:[], turn:starter, starter, revealed:{}};
+  let topId;
+  if(forcedId!==undefined && TOPS[forcedId]){ topId=forcedId; if(!S.used.includes(topId)){ S.used.push(topId); savePrefs(); } }
+  else topId=drawTop();
+  S.R={topId, active:S.players.map(p=>p.id), out:[], turn:starter, starter, revealed:{}};
+}
+function chooseTop(id){
+  id=+id; snap();
+  if(S.screen==='game'){ newRound(true, id); }
+  else { S.starterIdx++; newRound(false, id); S.screen='game'; }
+  S.sheet=null; toast('Top escolhido: boa sorte'); render();
 }
 function nextAfter(id){
   const order=S.players.map(p=>p.id), n=order.length; const i=order.indexOf(id);
@@ -577,6 +594,7 @@ function vGame(){
       ${t.n?`<p class="note">${esc(t.n)}</p>`:''}
       <div class="tc-actions">
         <button class="tc-btn" data-act="askSkip">${I.skip}Pular este top</button>
+        <button class="tc-btn" data-act="pickTop">${I.list}Escolher o top</button>
         ${S.judge?`<button class="tc-btn judge" data-act="judgeView">${I.eye}Ver respostas (juiz)</button>`:''}
       </div>
     </section>
@@ -621,7 +639,11 @@ function vRoundEnd(){
     </section>
   </div>
   <div class="foot">
-    <button class="btn primary big" data-act="nextRound">Próxima rodada · começa ${esc(nextStarter.name)}</button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button class="btn primary big" data-act="nextRound">Sortear o próximo top</button>
+      <button class="btn ghost big" data-act="pickTop">Escolher o top</button>
+    </div>
+    <p class="hint" style="text-align:center">A próxima rodada começa por ${esc(nextStarter.name)}</p>
     <button class="btn quiet" data-act="undo" ${H.length?'':'disabled'}>Desfazer o último lance</button>
   </div>`;
 }
@@ -664,7 +686,7 @@ function vSheet(){
       <li>Está no Top 10: quem duvidou sai da rodada. Não está: quem respondeu sai.</li>
       <li>Quem passar, travar ou repetir uma resposta também sai.</li>
       <li>Tem juiz? Escolha <b>Um juiz</b> no início: ele vê as 10 respostas em <b>Ver respostas</b> e decide as dúvidas tocando na lista.</li>
-      <li>O grupo não curtiu o tema? <b>Pular este top</b> sorteia outro e recomeça a rodada, sem mexer no placar.</li>
+      <li>O grupo não curtiu o tema? <b>Pular este top</b> sorteia outro, e <b>Escolher o top</b> abre a lista para vocês decidirem. Nos dois casos a rodada recomeça, sem mexer no placar.</li>
       <li>O último que sobrar ganha 1 ponto. Quem chegar a ${S.target} ${S.target>1?'pontos':'ponto'} primeiro vence a partida.</li>
     </ol>
     <h2 style="font-size:17px">Modo drinks</h2>
@@ -708,7 +730,18 @@ function vSheet(){
     <h2>Pular este top?</h2>
     <p class="muted">O app sorteia outro tema e a rodada ${started?'recomeça do zero, com todo mundo de volta, ':''}começando por ${esc(pName(S.R.starter))}. Ninguém ganha ou perde ponto.</p>
     <div class="stack"><button class="btn primary big" data-act="skipTop">Pular e sortear outro</button>
-    <button class="btn ghost" data-act="close">Continuar com este</button></div></div>`;
+    <button class="btn ghost" data-act="pickTop">Pular e escolher na lista</button>
+    <button class="btn quiet" data-act="close">Continuar com este</button></div></div>`;
+  }
+  if(s.type==='pickTop'){
+    const inGame=S.screen==='game';
+    const started=inGame && (Object.keys(S.R.revealed).length>0 || S.R.out.length>0 || S.R.turn!==S.R.starter);
+    return `<div class="sheet" role="dialog" aria-label="Escolher o top"><div class="grab"></div>
+    <h2>Escolha o top</h2>
+    <p class="muted">${inGame?(started?'A rodada recomeça do zero com o top escolhido. ':'')+'O placar não muda.':'Ele será o tema da próxima rodada.'} As respostas continuam escondidas.</p>
+    <div class="tsearch"><input type="text" id="tq" placeholder="Buscar: país, NBA, Spotify…" autocomplete="off" aria-label="Buscar top" value="${esc(s.q||'')}"></div>
+    <div id="tlist" class="stack">${topList(s.q||'')}</div>
+    <button class="btn quiet" data-act="close">Cancelar</button></div>`;
   }
   if(s.type==='judge'){
     const t=curTop();
@@ -778,6 +811,17 @@ function vDoubt(s){
   return '';
 }
 
+function topList(q){
+  const nq=basic(q||'');
+  const cur=S.R?S.R.topId:-1;
+  const groups=CATS.map(([k,l])=>{
+    const items=TOPS.filter(t=>t.c===k && (!nq || basic(t.t+' '+t.n+' '+l).includes(nq)));
+    if(!items.length) return '';
+    return `<div class="tgroup"><h3>${l}</h3>${items.map(t=>`<button class="tpick ${t.id===cur?'cur':''}" data-act="chooseTop" data-arg="${t.id}"><span>${esc(t.t)}</span>${t.id===cur?'<small>na mesa</small>':S.used.includes(t.id)?'<small>já jogado</small>':''}</button>`).join('')}</div>`;
+  }).join('');
+  return groups || '<p class="muted">Nenhum top com esse nome. Tente outra palavra.</p>';
+}
+
 function vResult(s){
   const t=curTop(), m=S.intensity;
   let cls, big, line, pen='';
@@ -835,6 +879,8 @@ const ACT = {
   judgeToggle(){ S.judge=!S.judge; savePrefs(); S.sheet=null; toast(S.judge?'Modo juiz ligado':'Modo juiz desligado'); render(); },
   judgeView(){ S.sheet={type:'judge'}; render(); },
   askSkip(){ S.sheet={type:'skip'}; render(); },
+  pickTop(){ S.sheet={type:'pickTop',q:''}; render(); },
+  chooseTop(id){ chooseTop(id); },
   check(){ const el=document.getElementById('ans'); const v=(el&&el.value||'').trim(); S.sheet.typed=v;
     if(!v){ focusId='ans'; render(); return; }
     const b=findBest(v, curTop());
@@ -866,7 +912,10 @@ document.addEventListener('keydown', e=>{
   }
   if(e.key==='Escape' && S.sheet && S.sheet.type!=='result'){ S.sheet=null; render(); }
 });
-document.addEventListener('input', e=>{ if(e.target.id==='ans' && S.sheet) S.sheet.typed=e.target.value; });
+document.addEventListener('input', e=>{
+  if(e.target.id==='ans' && S.sheet) S.sheet.typed=e.target.value;
+  if(e.target.id==='tq' && S.sheet){ S.sheet.q=e.target.value; const l=document.getElementById('tlist'); if(l) l.innerHTML=topList(e.target.value); }
+});
 
 /* ---------- Inicialização (preserva a partida em atualizações da página) ---------- */
 function start(data){

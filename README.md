@@ -16,6 +16,7 @@ Jogo de roda para celular. O app sorteia um ranking com 10 respostas escondidas.
 
 - **Quem confere as respostas:** o próprio app (você digita a resposta e ele confere sem mostrar a lista) ou um juiz (ele vê as 10 respostas e decide).
 - **Pular este top:** sorteia outro tema e recomeça a rodada sem mexer no placar.
+- **Escolher o top:** abre a lista dos 100 tops, com busca, para o grupo decidir o tema da rodada ou da próxima.
 - **Desfazer:** volta o último lance.
 - **Modo Drinks:** só bebe quem sai da rodada.
   - Perdeu uma dúvida como quem respondeu: 1 gole.
