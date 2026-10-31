@@ -1,0 +1,875 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#15122e">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Top 10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one-screen party app — marquee game-show board in the middle, the turn panel pinned under the thumb. */
+:root{
+  --ink:#15122e;
+  --panel:#211d45;
+  --panel2:#2d2860;
+  --line:rgba(236,232,255,.13);
+  --text:#f5f2ff;
+  --muted:#aaa3d6;
+  --accent:#ffc23d;
+  --accent-ink:#2a1d00;
+  --hit:#3fdc9c;
+  --hit-ink:#032a1b;
+  --miss:#ff5a6e;
+  --miss-ink:#2e0309;
+  --scrim:rgba(8,6,22,.72);
+  --display:'Bungee','Arial Black',Impact,sans-serif;
+  --body:'Instrument Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  color-scheme:dark;
+}
+:root[data-mode="drinks"]{
+  --ink:#1e0d1a;
+  --panel:#2e1428;
+  --panel2:#3f1c38;
+  --muted:#d3a8c4;
+  --accent:#ff8a4c;
+  --accent-ink:#2b0d00;
+  --scrim:rgba(18,5,14,.74);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  background:var(--ink);color:var(--text);font-family:var(--body);font-size:15px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0;
+  transition:background .3s;
+  -webkit-tap-highlight-color:transparent;
+}
+#app{max-width:520px;margin:0 auto;height:100%;display:flex;flex-direction:column}
+.scroll{flex:1;min-height:0;overflow-y:auto;padding-block:16px 20px;display:flex;flex-direction:column;gap:18px}
+.foot{padding-block:12px 14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px;background:var(--ink)}
+h1,h2{margin:0;text-wrap:balance}
+h2{font-size:15px;font-weight:700;letter-spacing:.01em}
+p{margin:0}
+.muted{color:var(--muted)}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.hint{font-size:13px;color:var(--muted)}
+button{font-family:inherit;cursor:pointer;color:inherit}
+button:disabled{cursor:not-allowed;opacity:.45}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* Buttons */
+.btn{font:600 16px/1.2 var(--body);border:0;border-radius:14px;padding:14px 16px;min-height:52px;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-align:center}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn.danger{background:var(--miss);color:var(--miss-ink)}
+.btn.hit{background:var(--hit);color:var(--hit-ink)}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+.btn.quiet{background:transparent;color:var(--muted);min-height:40px;padding:8px 12px;font-size:14px;font-weight:500}
+.btn.big{min-height:58px;font-size:17px}
+.btn.sm{min-height:46px;padding:10px 14px;font-size:15px}
+.btn small{display:block;font-weight:500;font-size:12px;opacity:.75}
+.btn:active:not(:disabled){transform:scale(.98)}
+.icon{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--panel);display:grid;place-items:center}
+.icon svg{width:22px;height:22px}
+.link{background:none;border:0;color:var(--accent);font-weight:600;font-size:14px;padding:6px}
+
+/* Setup */
+.hero{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding-top:6px}
+.logo{position:relative;display:inline-flex;align-items:baseline;gap:10px;padding:16px 24px 14px;border-radius:20px}
+.logo::before{content:"";position:absolute;inset:0;border-radius:20px;background:radial-gradient(circle,var(--accent) 0 2.6px,transparent 3.2px) 0 0/13px 13px;animation:twinkle 1.6s steps(2) infinite}
+.logo::after{content:"";position:absolute;inset:8px;border-radius:13px;background:var(--panel)}
+.logo>span{position:relative;z-index:1;font-family:var(--display);line-height:1}
+.l-top{font-size:26px;color:var(--text)}
+.l-10{font-size:54px;color:var(--accent)}
+@keyframes twinkle{50%{opacity:.55}}
+.tag{font-size:17px;font-weight:500;max-width:30ch}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.sec-h{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.add-row{display:flex;gap:8px}
+.add-row input{flex:1;min-width:0}
+input[type=text]{font:500 16px var(--body);color:var(--text);background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-height:46px;width:100%}
+input[type=text]::placeholder{color:var(--muted);opacity:.8}
+.names{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.names li{display:flex;align-items:center;gap:10px;background:var(--panel2);border-radius:12px;padding:6px 6px 6px 12px;min-height:48px}
+.names .seat{font-family:var(--display);font-size:15px;color:var(--accent);width:22px;text-align:center;font-variant-numeric:tabular-nums}
+.names .nm{flex:1;min-width:0;font-weight:600;overflow-wrap:anywhere}
+.mini{width:38px;height:38px;border-radius:10px;border:0;background:transparent;color:var(--muted);display:grid;place-items:center}
+.mini svg{width:18px;height:18px}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg button{border:1px solid var(--line);background:var(--ink);border-radius:14px;padding:12px;text-align:left;display:flex;flex-direction:column;gap:2px;min-height:60px}
+.seg button b{font-size:16px}
+.seg button small{font-size:12.5px;color:var(--muted)}
+.seg button.on{border-color:var(--accent);background:var(--panel2);box-shadow:inset 0 0 0 1px var(--accent)}
+.stepper{display:flex;align-items:center;gap:14px}
+.stepper .val{font-family:var(--display);font-size:34px;color:var(--accent);min-width:44px;text-align:center;font-variant-numeric:tabular-nums}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--ink);border-radius:999px;padding:8px 13px;font-size:14px;font-weight:600;min-height:40px}
+.chip span{color:var(--muted);font-weight:500;margin-left:4px}
+.chip.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.chip.on span{color:var(--accent-ink);opacity:.7}
+
+/* Game */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:12px 0}
+.topbar .rd{display:flex;flex-direction:column;gap:1px}
+.topbar .rd b{font-family:var(--display);font-size:20px;line-height:1.1;font-weight:400}
+.tb-actions{display:flex;gap:8px}
+.top-card{background:var(--panel2);border-radius:18px;padding:16px 16px 14px;display:flex;flex-direction:column;gap:6px}
+.top-card h1{font-size:24px;line-height:1.15;font-weight:700}
+.top-card .note{font-size:13px;color:var(--muted)}
+.tc-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.tc-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--ink);border-radius:999px;padding:8px 13px;min-height:40px;font-weight:600;font-size:14px}
+.tc-btn svg{width:17px;height:17px}
+.tc-btn.judge{border-color:var(--accent);color:var(--accent)}
+.judge-tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.board{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(5,auto);grid-auto-flow:column;gap:8px}
+.slot{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:7px 10px 7px 6px;min-height:48px;min-width:0}
+.slot .num{font-family:var(--display);font-size:18px;color:var(--accent);width:30px;flex:none;text-align:center;font-variant-numeric:tabular-nums}
+.slot .txt{font-weight:600;font-size:14px;line-height:1.2;min-width:0;overflow-wrap:anywhere}
+.slot.hid .txt{color:var(--muted);letter-spacing:.35em;opacity:.6}
+.slot.on{border-color:var(--hit);background:color-mix(in srgb,var(--hit) 15%,var(--panel))}
+.slot.on .num{color:var(--hit)}
+.slot.miss .txt{color:var(--muted);font-weight:500}
+.slot small{display:block;font-weight:500;font-size:11.5px;color:var(--muted);letter-spacing:0}
+.pl{display:flex;flex-wrap:wrap;gap:8px}
+.pchip{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:7px 12px;background:var(--panel);border:1px solid var(--line);font-weight:600;font-size:14px}
+.pchip.cur{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.pchip.out{opacity:.42;text-decoration:line-through}
+.pips{display:inline-flex;gap:3px}
+.pips i{width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;opacity:.7}
+.pips i.f{background:currentColor;opacity:1}
+.drink-note{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted);background:color-mix(in srgb,var(--accent) 10%,transparent);border:1px dashed color-mix(in srgb,var(--accent) 45%,transparent);border-radius:12px;padding:10px 12px}
+.drink-note svg{width:18px;height:18px;flex:none;color:var(--accent);margin-top:1px}
+.turn .who{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.turn .who .nm{font-family:var(--display);font-size:30px;line-height:1.05;color:var(--accent);overflow-wrap:anywhere;min-width:0}
+.turn .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+/* Overlay + sheets */
+#ov{position:fixed;inset:0;z-index:20;background:var(--scrim);display:flex;align-items:flex-end;justify-content:center;padding-top:env(safe-area-inset-top,0px)}
+.sheet{width:min(520px,100%);max-height:92%;overflow-y:auto;background:var(--panel);border-radius:24px 24px 0 0;
+  padding:20px max(18px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));
+  display:flex;flex-direction:column;gap:14px;animation:up .22s ease-out}
+@keyframes up{from{transform:translateY(24px);opacity:.4}}
+.sheet h2{font-size:21px;line-height:1.2}
+.sheet .row{display:flex;gap:8px;flex-wrap:wrap}
+.sheet .stack{display:flex;flex-direction:column;gap:8px}
+.grab{width:42px;height:5px;border-radius:9px;background:var(--line);align-self:center;margin-top:-6px}
+.pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.pick button{border:1px solid var(--line);background:var(--panel2);border-radius:14px;min-height:54px;font-weight:700;font-size:16px;padding:10px;overflow-wrap:anywhere}
+.match{background:var(--panel2);border:1px solid var(--hit);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px}
+.match .num{font-family:var(--display);font-size:30px;color:var(--hit)}
+.match b{font-size:19px;overflow-wrap:anywhere}
+.full{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.full button{width:100%;display:flex;align-items:center;gap:12px;text-align:left;border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:10px 12px;min-height:48px;font-weight:600}
+.full .num{font-family:var(--display);color:var(--accent);width:26px;text-align:center}
+.full .tag2{margin-left:auto;font-size:12px;color:var(--muted);font-weight:500}
+.verdict{border-radius:20px;padding:22px 18px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.verdict.in{background:var(--hit);color:var(--hit-ink)}
+.verdict.out{background:var(--miss);color:var(--miss-ink)}
+.verdict.neutral{background:var(--panel2);color:var(--text)}
+.verdict .big{font-family:var(--display);font-size:32px;line-height:1.05}
+.verdict p{font-size:17px;font-weight:600}
+.penalty{display:flex;align-items:center;gap:10px;background:var(--panel2);border-radius:14px;padding:12px 14px;font-weight:700;font-size:16px}
+.penalty svg{width:22px;height:22px;color:var(--accent);flex:none}
+.rules{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+.rules li::marker{font-family:var(--display);color:var(--accent)}
+.menu-list{display:flex;flex-direction:column;gap:8px}
+.menu-list .btn{justify-content:flex-start;text-align:left}
+
+/* Round end / champion */
+.win-hero{display:flex;flex-direction:column;gap:6px;padding-top:6px}
+.win-hero .crown{width:46px;height:46px;color:var(--accent)}
+.win-hero .nm{font-family:var(--display);font-size:clamp(34px,11vw,52px);line-height:1;color:var(--accent);overflow-wrap:anywhere}
+.win-hero p{font-size:17px;font-weight:600}
+.score{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.score li{display:flex;align-items:center;gap:12px;background:var(--panel);border-radius:12px;padding:10px 14px;min-height:48px}
+.score .pos{font-family:var(--display);color:var(--muted);width:20px;text-align:center}
+.score .nm{flex:1;min-width:0;font-weight:600;overflow-wrap:anywhere}
+.score .pts{font-family:var(--display);font-size:20px;color:var(--accent);font-variant-numeric:tabular-nums}
+.score li.lead{background:var(--panel2);box-shadow:inset 0 0 0 1px var(--accent)}
+
+#toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 196px);transform:translateX(-50%);background:var(--text);color:var(--ink);font-weight:700;padding:10px 16px;border-radius:999px;font-size:15px;z-index:30;pointer-events:none;opacity:0;transition:opacity .2s;white-space:nowrap;max-width:calc(100% - 32px);overflow:hidden;text-overflow:ellipsis}
+#toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+</head>
+<body>
+<div id="app"></div>
+<div id="ov" hidden></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+/* ---------- Categorias e tops ---------- */
+const CATS = [
+  ['mundo','Mundo'],['brasil','Brasil'],['esporte','Esportes'],['ciencia','Ciência'],
+  ['pop','Cultura pop'],['economia','Economia'],['curio','Curiosidades'],['bar','Bar & café']
+];
+const CAT_LABEL = Object.fromEntries(CATS);
+
+// [categoria, título, nota/fonte, respostas em ordem; "|" separa nomes alternativos aceitos]
+const RAW = [
+['mundo','Maiores países do mundo em área','Área total','Rússia;Canadá;China;Estados Unidos|EUA;Brasil;Austrália;Índia;Argentina;Cazaquistão;Argélia'],
+['mundo','Países mais populosos do mundo','ONU, 2024','Índia;China;Estados Unidos|EUA;Indonésia;Paquistão;Nigéria;Brasil;Bangladesh;Rússia;Etiópia'],
+['mundo','Rios mais longos do mundo','Contando o sistema fluvial (ex.: Mississippi–Missouri)','Nilo;Amazonas;Yangtzé|Yangtze|Rio Azul|Chang Jiang;Mississippi|Mississipi|Missouri;Ienissei|Yenisei|Ienisei;Amarelo|Rio Amarelo|Huang He;Obi|Ob|Irtysh|Irtich;Paraná|Rio da Prata;Congo|Rio Congo;Amur'],
+['mundo','Montanhas mais altas do mundo','Altitude acima do nível do mar','Everest;K2;Kangchenjunga|Kanchenjunga;Lhotse;Makalu;Cho Oyu;Dhaulagiri;Manaslu;Nanga Parbat;Annapurna'],
+['mundo','Maiores ilhas do mundo','Austrália conta como continente','Groenlândia;Nova Guiné;Bornéu|Borneo;Madagascar|Madagáscar;Ilha de Baffin|Baffin;Sumatra;Honshu;Ilha Vitória|Victoria;Grã-Bretanha|Great Britain;Ilha Ellesmere|Ellesmere'],
+['mundo','Maiores lagos do mundo','Por área','Mar Cáspio|Cáspio;Lago Superior|Superior;Lago Vitória|Vitória;Lago Huron|Huron;Lago Michigan|Michigan;Tanganica|Tanganyika;Baikal;Grande Lago do Urso|Lago do Urso;Lago Malawi|Malawi|Niassa;Grande Lago do Escravo|Lago do Escravo'],
+['mundo','Países mais visitados por turistas','Chegadas internacionais, ONU Turismo 2024','França;Espanha;Estados Unidos|EUA;Turquia;Itália;México;Reino Unido|Inglaterra;Alemanha;Japão;Grécia'],
+['mundo','Maiores países das Américas em área','Groenlândia não conta (não é país)','Canadá;Estados Unidos|EUA;Brasil;Argentina;México;Peru;Colômbia;Bolívia;Venezuela;Chile'],
+['mundo','Maiores países da América do Sul em área','','Brasil;Argentina;Peru;Colômbia;Bolívia;Venezuela;Chile;Paraguai;Equador;Guiana'],
+['mundo','Países mais populosos da América do Sul','ONU, 2024','Brasil;Colômbia;Argentina;Peru;Venezuela;Chile;Equador;Bolívia;Paraguai;Uruguai'],
+['mundo','Países mais populosos da Europa','Rússia conta inteira; Turquia não conta','Rússia;Alemanha;Reino Unido|Inglaterra;França;Itália;Espanha;Polônia;Ucrânia;Romênia;Holanda|Países Baixos'],
+['mundo','Maiores países da Europa em área','Sem Rússia, Turquia e Cazaquistão','Ucrânia;França;Espanha;Suécia;Noruega;Alemanha;Finlândia;Polônia;Itália;Reino Unido|Inglaterra'],
+['mundo','Países mais populosos da África','ONU, 2024','Nigéria;Etiópia;Egito;RD Congo|República Democrática do Congo|Congo;Tanzânia;África do Sul;Quênia;Uganda;Sudão;Argélia'],
+['mundo','Maiores países da África em área','','Argélia;RD Congo|República Democrática do Congo|Congo;Sudão;Líbia;Chade;Níger;Angola;Mali;África do Sul;Etiópia'],
+['mundo','Maiores países da Ásia em área','Sem Rússia','China;Índia;Cazaquistão;Arábia Saudita;Indonésia;Irã;Mongólia;Paquistão;Turquia;Mianmar|Birmânia'],
+['mundo','Países mais populosos da Ásia','Sem Rússia · ONU, 2024','Índia;China;Indonésia;Paquistão;Bangladesh;Japão;Filipinas;Vietnã;Irã;Turquia'],
+['mundo','Estados mais populosos dos EUA','','Califórnia|California;Texas;Flórida|Florida;Nova York|New York;Pensilvânia|Pennsylvania;Illinois;Ohio;Geórgia|Georgia;Carolina do Norte|North Carolina;Michigan'],
+['mundo','Maiores estados dos EUA em área','','Alasca|Alaska;Texas;Califórnia|California;Montana;Novo México|New Mexico;Arizona;Nevada;Colorado;Oregon;Wyoming'],
+['mundo','Menores estados dos EUA em área','Do menor para o maior','Rhode Island;Delaware;Connecticut;Nova Jersey|New Jersey;Nova Hampshire|New Hampshire;Vermont;Massachusetts;Havaí|Hawaii;Maryland;Virgínia Ocidental|West Virginia'],
+['mundo','Prédios mais altos do mundo','Altura arquitetônica','Burj Khalifa;Merdeka 118|Merdeka;Shanghai Tower|Torre de Xangai;Abraj Al-Bait|Torre do Relógio de Meca|Makkah Clock Tower;Ping An Finance Center|Ping An;Lotte World Tower|Lotte;One World Trade Center|One World Trade|Freedom Tower;Guangzhou CTF Finance Centre|Guangzhou CTF;Tianjin CTF Finance Centre|Tianjin CTF;CITIC Tower|China Zun'],
+['mundo','Menores países do mundo','Por área, do menor para o maior','Vaticano;Mônaco;Nauru;Tuvalu;San Marino;Liechtenstein;Ilhas Marshall;São Cristóvão e Névis|São Cristóvão;Maldivas;Malta'],
+['mundo','Maiores aglomerações urbanas do mundo','Região urbana, ONU 2018','Tóquio;Délhi|Nova Délhi|Delhi;Xangai;São Paulo;Cidade do México;Cairo;Mumbai|Bombaim;Pequim;Daca|Dhaka;Osaka'],
+['mundo','Países mais felizes do mundo','World Happiness Report 2025','Finlândia;Dinamarca;Islândia;Suécia;Holanda|Países Baixos;Costa Rica;Noruega;Israel;Luxemburgo;México'],
+['mundo','Países com mais Patrimônios da Humanidade','UNESCO','Itália;China;Alemanha;França;Espanha;Índia;México;Reino Unido|Inglaterra;Rússia;Irã'],
+['mundo','Maiores países do mundo: do 11º ao 20º','Modo difícil · por área','RD Congo|República Democrática do Congo|Congo;Arábia Saudita;México;Indonésia;Sudão;Líbia;Irã;Mongólia;Peru;Chade'],
+['mundo','Mais populosos do mundo: do 11º ao 20º','Modo difícil · ONU, 2024','México;Japão;Egito;Filipinas;RD Congo|República Democrática do Congo|Congo;Vietnã;Irã;Turquia;Alemanha;Tailândia'],
+['mundo','Países mais populosos com espanhol oficial','EUA não contam','México;Colômbia;Espanha;Argentina;Peru;Venezuela;Chile;Guatemala;Equador;Bolívia'],
+
+['brasil','Maiores estados do Brasil em área','','Amazonas;Pará;Mato Grosso;Minas Gerais;Bahia;Mato Grosso do Sul;Goiás;Maranhão;Rio Grande do Sul;Tocantins'],
+['brasil','Estados mais populosos do Brasil','Censo 2022','São Paulo;Minas Gerais;Rio de Janeiro;Bahia;Paraná;Rio Grande do Sul;Pernambuco;Ceará;Pará;Santa Catarina'],
+['brasil','Cidades mais populosas do Brasil','Censo 2022','São Paulo;Rio de Janeiro;Brasília;Fortaleza;Salvador;Belo Horizonte|BH;Manaus;Curitiba;Recife;Goiânia'],
+['brasil','Menores estados do Brasil em área','Distrito Federal conta · do menor para o maior','Distrito Federal|DF;Sergipe;Alagoas;Rio de Janeiro;Espírito Santo;Rio Grande do Norte;Paraíba;Santa Catarina;Pernambuco;Amapá'],
+['brasil','Estados menos populosos do Brasil','Censo 2022 · Distrito Federal conta','Roraima;Amapá;Acre;Tocantins;Rondônia;Sergipe;Mato Grosso do Sul;Distrito Federal|DF;Alagoas;Piauí'],
+['brasil','Nomes mais comuns no Brasil','IBGE','Maria;José;Ana;João;Antônio|Antonio;Francisco;Carlos;Paulo;Pedro;Lucas'],
+['brasil','Sobrenomes mais comuns no Brasil','','Silva;Santos;Oliveira;Souza|Sousa;Rodrigues;Ferreira;Alves;Pereira;Lima;Gomes'],
+['brasil','Cidades mais populosas do Nordeste','Censo 2022','Fortaleza;Salvador;Recife;São Luís;Maceió;Teresina;João Pessoa;Natal;Jaboatão dos Guararapes|Jaboatão;Feira de Santana'],
+['brasil','Estados com mais municípios','','Minas Gerais;São Paulo;Rio Grande do Sul;Bahia;Paraná;Santa Catarina;Goiás;Piauí;Paraíba;Maranhão'],
+
+['esporte','Maiores pontuadores da história da NBA','Temporada regular','LeBron James|LeBron;Kareem Abdul-Jabbar|Kareem;Karl Malone;Kobe Bryant|Kobe;Michael Jordan|Jordan;Dirk Nowitzki|Dirk|Nowitzki;Wilt Chamberlain|Chamberlain;Kevin Durant|Durant;Shaquille O\'Neal|Shaq|Shaquille;Carmelo Anthony|Carmelo'],
+['esporte','Países com mais ouros olímpicos','Jogos de Verão, até Paris 2024','Estados Unidos|EUA;União Soviética|URSS;China;Reino Unido|Grã-Bretanha|Inglaterra;França;Itália;Alemanha;Japão;Hungria;Austrália'],
+['esporte','Países com mais medalhas em Paris 2024','Total de medalhas','Estados Unidos|EUA;China;Reino Unido|Grã-Bretanha|Inglaterra;França;Austrália;Japão;Itália;Holanda|Países Baixos;Alemanha;Coreia do Sul|Coreia'],
+
+['ciencia','Elementos mais abundantes na crosta terrestre','Por massa','Oxigênio;Silício;Alumínio;Ferro;Cálcio;Sódio;Magnésio;Potássio;Titânio;Hidrogênio'],
+['ciencia','Elementos mais abundantes no universo','Por massa','Hidrogênio;Hélio;Oxigênio;Carbono;Neônio|Neon;Ferro;Nitrogênio;Silício;Magnésio;Enxofre'],
+['ciencia','Elementos mais abundantes no corpo humano','Por massa','Oxigênio;Carbono;Hidrogênio;Nitrogênio;Cálcio;Fósforo;Potássio;Enxofre;Sódio;Cloro'],
+['ciencia','Gases mais abundantes no ar','Ar seco','Nitrogênio|N2;Oxigênio|O2;Argônio|Argon;Dióxido de carbono|Gás carbônico|CO2;Neônio|Neon;Hélio;Metano;Criptônio|Kriptônio|Krypton;Hidrogênio;Óxido nitroso|N2O'],
+['ciencia','Maiores luas do Sistema Solar','Por diâmetro','Ganimedes;Titã;Calisto;Io;Lua;Europa;Tritão;Titânia;Reia;Oberon'],
+['ciencia','Maiores corpos do Sistema Solar','Por diâmetro, Sol incluso','Sol;Júpiter;Saturno;Urano;Netuno;Terra;Vênus;Marte;Ganimedes;Titã'],
+['ciencia','Estrelas mais brilhantes do céu noturno','Sem contar o Sol','Sírius|Sirius;Canopus;Alfa Centauri|Rigil Kentaurus;Arcturus|Arcturo;Vega;Capela;Rigel;Procyon|Prócion;Achernar|Aquernar;Betelgeuse'],
+['ciencia','Maiores constelações do céu','Por área (IAU)','Hidra;Virgem;Ursa Maior;Baleia|Cetus;Hércules;Erídano|Eridanus;Pégaso;Dragão|Draco;Centauro;Aquário'],
+
+
+['pop','Artistas mais ouvidos do Spotify','Lista de todos os tempos, abr/2026','Taylor Swift;Bad Bunny;Drake;The Weeknd|Weeknd;Ariana Grande;Ed Sheeran;Justin Bieber|Bieber;Billie Eilish;Eminem;Kanye West|Kanye|Ye'],
+['pop','Músicas mais ouvidas do Spotify','Lista de todos os tempos, abr/2026','Blinding Lights;Shape of You;Sweater Weather;Starboy;As It Was;Someone You Loved;Sunflower;One Dance;Perfect;Stay'],
+['pop','Contas mais seguidas do Instagram','Out/2026 · a conta do próprio Instagram vale','Instagram;Cristiano Ronaldo|CR7|Ronaldo;Lionel Messi|Messi;Selena Gomez;Kylie Jenner;Dwayne Johnson|The Rock;Ariana Grande;Kim Kardashian;Beyoncé;Khloé Kardashian|Khloe'],
+['curio','Raças de cachorro mais populares dos EUA','AKC 2024','Buldogue Francês|Bulldog Francês;Labrador;Golden Retriever|Golden;Pastor Alemão;Poodle;Dachshund|Salsicha|Teckel;Beagle;Rottweiler;Buldogue Inglês|Bulldog Inglês|Bulldog;Braco Alemão de Pelo Curto|Pointer Alemão'],
+['curio','Idiomas mais falados do mundo','Total de falantes, Ethnologue','Inglês;Mandarim|Chinês;Hindi;Espanhol;Árabe;Francês;Bengali;Português;Russo;Urdu'],
+
+['economia','Marcas mais valiosas do mundo','Interbrand 2024','Apple;Microsoft;Amazon;Google;Samsung;Toyota;Coca-Cola;Mercedes-Benz|Mercedes;McDonald\'s|McDonalds;BMW'],
+['economia','Moedas mais negociadas do mundo','BIS 2022','Dólar americano|Dólar|USD;Euro;Iene|Yen;Libra esterlina|Libra;Yuan|Renminbi;Dólar australiano;Dólar canadense;Franco suíço|Franco;Dólar de Hong Kong;Dólar de Singapura|Dólar de Cingapura'],
+['economia','Maiores produtores de petróleo','2023','Estados Unidos|EUA;Arábia Saudita;Rússia;Canadá;Iraque;China;Emirados Árabes Unidos|Emirados;Brasil;Irã;Kuwait'],
+['economia','Maiores reservas de petróleo','Reservas provadas','Venezuela;Arábia Saudita;Irã;Canadá;Iraque;Emirados Árabes Unidos|Emirados;Kuwait;Rússia;Líbia;Estados Unidos|EUA'],
+['economia','Países com mais reatores nucleares','Reatores em operação','Estados Unidos|EUA;França;China;Rússia;Japão;Coreia do Sul|Coreia;Índia;Canadá;Ucrânia;Reino Unido|Inglaterra'],
+['economia','Maiores produtores de soja','Safras recentes','Brasil;Estados Unidos|EUA;Argentina;China;Índia;Paraguai;Canadá;Rússia;Bolívia;Ucrânia'],
+['economia','Países que mais fabricam carros','OICA 2023','China;Estados Unidos|EUA;Japão;Índia;Coreia do Sul|Coreia;Alemanha;México;Espanha;Brasil;Tailândia'],
+['economia','Aeroportos mais movimentados do mundo','Passageiros, ACI 2024','Atlanta;Dubai;Dallas|Dallas Fort Worth;Tóquio Haneda|Haneda|Tóquio;Londres Heathrow|Heathrow|Londres;Denver;Chicago O\'Hare|O\'Hare|Chicago;Istambul;Nova Délhi|Délhi|Delhi;Xangai Pudong|Pudong|Xangai'],
+['curio','Linguagens de programação mais usadas','Stack Overflow Survey 2024','JavaScript;HTML/CSS|HTML|CSS;Python;SQL;TypeScript;Bash/Shell|Bash|Shell;Java;C#|C Sharp;C++;C'],
+
+['bar','Maiores produtores de vinho','OIV 2023','França;Itália;Espanha;Estados Unidos|EUA;Chile;Austrália;África do Sul;Argentina;Alemanha;Portugal'],
+['bar','Uvas de vinho mais plantadas do mundo','Área plantada, OIV','Cabernet Sauvignon|Cabernet;Merlot;Tempranillo;Airén;Chardonnay;Syrah|Shiraz;Grenache|Garnacha;Sauvignon Blanc;Pinot Noir;Trebbiano|Ugni Blanc'],
+['bar','Maiores produtores de café','USDA, safras recentes','Brasil;Vietnã;Colômbia;Indonésia;Etiópia;Uganda;Honduras;Índia;Peru;México'],
+['bar','Países que mais tomam café por pessoa','Consumo per capita','Finlândia;Noruega;Islândia;Dinamarca;Holanda|Países Baixos;Suécia;Suíça;Bélgica;Luxemburgo;Canadá'],
+
+['curio','Letras mais usadas no português','Frequência em textos','A;E;O;S;R;I;N;D;M;U'],
+['curio','Letras mais usadas no inglês','Frequência em textos','E;T;A;O;I;N;S;H;R;D'],
+['mundo','Maiores desertos do mundo','Por área, incluindo os polares','Antártida|Deserto Antártico|Antártico;Ártico|Deserto Ártico;Saara;Deserto da Arábia|Arábico|Arábia;Gobi;Kalahari;Patagônia|Deserto da Patagônia;Grande Deserto de Victoria|Grande Victoria;Deserto da Síria|Sírio|Síria;Grande Bacia|Great Basin'],
+['mundo','Cidades mais populosas dos EUA','Censo 2020','Nova York|New York;Los Angeles;Chicago;Houston;Phoenix;Filadélfia|Philadelphia;San Antonio;San Diego;Dallas;San Jose'],
+['mundo','Países com mais florestas','Área de floresta, FAO 2022','Rússia;Brasil;Canadá;Estados Unidos|EUA;China;Austrália;RD Congo|República Democrática do Congo|Congo;Indonésia;Índia;Peru'],
+['mundo','Países que mais emitem gases do efeito estufa','EDGAR (Comissão Europeia), 2024','China;Estados Unidos|EUA;Índia;Rússia;Indonésia;Brasil;Japão;Irã;Arábia Saudita;Canadá'],
+['mundo','Museus mais visitados do mundo','Visitantes em 2024 ou 2025','Louvre;Museu Nacional da China;Museus Vaticanos|Museu do Vaticano|Vaticano;Museu de Shenzhen|Shenzhen;Museu Nacional da Coreia;Museu Britânico|British Museum;Museu de Ciência e Tecnologia da China;Museu de História Natural de Londres|Natural History Museum;Metropolitan Museum of Art|Metropolitan|Met;Museu de Nanjing|Nanjing'],
+
+['brasil','Maiores municípios do Brasil em área','IBGE','Altamira;Barcelos;São Gabriel da Cachoeira;Oriximiná;Tapauá;São Félix do Xingu;Atalaia do Norte;Almeirim;Jutaí;Lábrea'],
+['brasil','Pontos mais altos do Brasil','Altitude, IBGE','Pico da Neblina|Neblina;Pico 31 de Março|31 de Março;Pico da Bandeira|Bandeira;Pedra da Mina;Pico das Agulhas Negras|Agulhas Negras;Pico do Cristal|Cristal;Monte Roraima|Roraima;Morro do Couto|Couto;Pedra do Sino de Itatiaia|Pedra do Sino;Pico dos Três Estados|Três Estados'],
+['brasil','Presidentes do Brasil com mais tempo no cargo','Soma dos mandatos, até out/2026','Getúlio Vargas|Getúlio|Vargas;Lula|Luiz Inácio Lula da Silva;Fernando Henrique Cardoso|FHC|Fernando Henrique;João Figueiredo|Figueiredo;Dilma Rousseff|Dilma;Ernesto Geisel|Geisel;José Sarney|Sarney;Eurico Gaspar Dutra|Dutra;Juscelino Kubitschek|JK|Juscelino;Emílio Médici|Médici'],
+['brasil','Maiores PIBs estaduais','IBGE, 2023 · MT empata com PE em 2,5%; vale o ranking do IBGE','São Paulo;Rio de Janeiro;Minas Gerais;Paraná;Rio Grande do Sul;Santa Catarina;Bahia;Distrito Federal|DF;Goiás;Mato Grosso'],
+['brasil','Maiores torcidas do Brasil','Pesquisa CBF/Nexus, nov/2025','Flamengo;Corinthians;São Paulo;Palmeiras;Vasco|Vasco da Gama;Internacional|Inter;Cruzeiro;Atlético-MG|Atlético Mineiro|Galo;Grêmio;Santos'],
+['brasil','Maiores estádios do Brasil','Capacidade de público','Maracanã;Mané Garrincha;Mineirão;Morumbi|Morumbis;Arruda;Castelão|Arena Castelão;Arena do Grêmio;Mangueirão;Beira-Rio;Fonte Nova|Arena Fonte Nova'],
+['brasil','Aeroportos mais movimentados do Brasil','Passageiros, 2022','Guarulhos;Congonhas;Brasília;Viracopos;Santos Dumont;Confins|Belo Horizonte;Recife|Guararapes;Porto Alegre|Salgado Filho;Salvador;Galeão|Tom Jobim'],
+
+['esporte','Maiores artilheiros da Champions League','Até a temporada 2025–26','Cristiano Ronaldo|CR7|Ronaldo;Lionel Messi|Messi;Robert Lewandowski|Lewandowski;Karim Benzema|Benzema;Kylian Mbappé|Mbappé;Raúl;Erling Haaland|Haaland;Harry Kane|Kane;Thomas Müller|Müller;Ruud van Nistelrooy|Van Nistelrooy'],
+['esporte','Jogadores com mais jogos pela Seleção Brasileira','Até jul/2026','Cafu;Neymar;Roberto Carlos;Daniel Alves|Dani Alves;Thiago Silva;Marquinhos;Lúcio;Taffarel|Cláudio Taffarel;Robinho;Ronaldo|Ronaldo Fenômeno'],
+['esporte','Maiores artilheiros da Seleção Brasileira','Até jul/2026','Neymar;Pelé;Ronaldo|Ronaldo Fenômeno;Romário;Zico;Bebeto;Jairzinho;Rivaldo;Tostão;Ademir de Menezes|Ademir'],
+['esporte','Transferências mais caras do futebol','Valor em euros','Neymar;Kylian Mbappé|Mbappé;Alexander Isak|Isak;João Félix;Enzo Fernández|Enzo;Antoine Griezmann|Griezmann;Philippe Coutinho|Coutinho;Jack Grealish|Grealish;Florian Wirtz|Wirtz;Declan Rice|Rice'],
+['esporte','Atletas mais bem pagos do mundo','Forbes 2025','Cristiano Ronaldo|CR7|Ronaldo;Stephen Curry|Curry;Tyson Fury|Fury;Dak Prescott|Prescott;Lionel Messi|Messi;LeBron James|LeBron;Juan Soto|Soto;Karim Benzema|Benzema;Shohei Ohtani|Ohtani;Kevin Durant|Durant'],
+['esporte','Mais assistências na história da NBA','Temporada regular, até 2025–26','John Stockton|Stockton;Chris Paul;Jason Kidd|Kidd;LeBron James|LeBron;Russell Westbrook|Westbrook;Steve Nash|Nash;Mark Jackson;Magic Johnson|Magic;Oscar Robertson|Robertson;Isiah Thomas'],
+['esporte','Mais rebotes na história da NBA','Temporada regular','Wilt Chamberlain|Chamberlain|Wilt;Bill Russell|Russell;Kareem Abdul-Jabbar|Kareem;Elvin Hayes|Hayes;Moses Malone;Tim Duncan|Duncan;Karl Malone;Robert Parish|Parish;Kevin Garnett|Garnett;Dwight Howard|Howard'],
+['esporte','Mais semanas como nº 1 do tênis','Ranking ATP, out/2026','Novak Djokovic|Djokovic;Roger Federer|Federer;Pete Sampras|Sampras;Ivan Lendl|Lendl;Jimmy Connors|Connors;Rafael Nadal|Nadal;John McEnroe|McEnroe;Björn Borg|Borg;Andre Agassi|Agassi;Jannik Sinner|Sinner'],
+
+['ciencia','Elementos mais densos','Densidade, entre os já medidos','Ósmio;Irídio;Platina;Rênio;Netúnio;Plutônio;Ouro;Tungstênio;Urânio;Tântalo'],
+['ciencia','Metais com maior ponto de fusão','Temperatura de fusão','Tungstênio;Rênio;Ósmio;Tântalo;Molibdênio;Nióbio;Irídio;Rutênio;Háfnio;Tecnécio'],
+['ciencia','Maiores planetas e planetas anões','Por diâmetro','Júpiter;Saturno;Urano;Netuno;Terra;Vênus;Marte;Mercúrio;Plutão;Éris'],
+
+['mundo','Países com mais Prêmios Nobel','Laureados até 2025','Estados Unidos|EUA;Reino Unido|Inglaterra;Alemanha;França;Suécia;Japão;Rússia|União Soviética|URSS;Canadá;Suíça;Áustria'],
+
+['pop','Maiores bilheterias da história do cinema','Mundial, out/2026 · filmes em cartaz ainda podem subir','Vingadores: Ultimato|Ultimato|Avengers Endgame;Avatar;Homem-Aranha: Brand New Day|Homem-Aranha: Um Novo Dia|Brand New Day|Um Novo Dia;Avatar: O Caminho da Água|O Caminho da Água|Avatar 2;Titanic;Ne Zha 2|Nezha 2;Star Wars: O Despertar da Força|O Despertar da Força|Star Wars 7;Vingadores: Guerra Infinita|Guerra Infinita|Infinity War;Homem-Aranha: Sem Volta para Casa|Sem Volta para Casa|No Way Home;Zootopia 2'],
+['pop','Consoles mais vendidos da história','Unidades vendidas, out/2026','PlayStation 2|PS2;Nintendo Switch|Switch;Nintendo DS|DS;Game Boy;PlayStation 4|PS4;PlayStation|PS1|PlayStation 1;Wii;PlayStation 5|PS5;PlayStation 3|PS3;Xbox 360'],
+['pop','Jogos de videogame mais vendidos','Cópias vendidas','Tetris;Minecraft;Grand Theft Auto V|GTA V|GTA 5;Red Dead Redemption 2|RDR2|Red Dead 2;Wii Sports;Mario Kart 8|Mario Kart 8 Deluxe|Mario Kart;PUBG|PUBG: Battlegrounds;Terraria;The Witcher 3|Witcher 3|Witcher;Super Mario Bros.|Super Mario'],
+['pop','Canais mais inscritos do YouTube','Jun/2026','MrBeast|Mr Beast;T-Series;Cocomelon;SET India|Sony SET;Vlad and Niki|Vlad e Niki;Stokes Twins;Kids Diana Show|Diana;Kimpro;Like Nastya|Nastya;Alejo Igoa'],
+['pop','Vídeos mais vistos do YouTube','Ago/2026 · anúncios não contam','Baby Shark;Wheels on the Bus;Despacito;Bath Song;Johny Johny Yes Papa|Johny Johny;Phonics Song with Two Words|Phonics Song;See You Again;Shape of You;Axel F|Crazy Frog;Gangnam Style'],
+['pop','Contas mais seguidas do TikTok','Set/2026','Khaby Lame|Khaby;Charli D\'Amelio|Charli;MrBeast|Mr Beast;TikTok;Bella Poarch;Addison Rae;Willie Salim;Zach King;FIFA World Cup|FIFA|Copa do Mundo;Kimberly Loaiza'],
+['pop','Álbuns mais ouvidos do Spotify','Todos os tempos, abr/2026','Un Verano Sin Ti;Starboy;Divide|Divide Deluxe;Sour;After Hours;SOS;Hollywood\'s Bleeding;Lover;AM;When We All Fall Asleep, Where Do We Go?|When We All Fall Asleep'],
+
+['economia','Maiores economias do mundo','PIB nominal, estimativa do FMI para 2026','Estados Unidos|EUA;China;Alemanha;Japão;Reino Unido|Inglaterra;Índia;França;Itália;Rússia;Brasil'],
+['economia','Maiores empresas do mundo por receita','Fortune Global 500, 2025','Walmart;Amazon;State Grid;Saudi Aramco|Aramco;China National Petroleum|CNPC|PetroChina;Sinopec;UnitedHealth|UnitedHealth Group;Apple;CVS Health|CVS;Berkshire Hathaway|Berkshire'],
+];
+
+const TOPS = RAW.map((r,i)=>({id:i,c:r[0],t:r[1],n:r[2],a:r[3].split(';').map(x=>x.split('|').map(s=>s.trim()))}));
+
+/* ---------- Conferência de respostas ---------- */
+const STOP = /\b(o|a|os|as|de|da|do|das|dos|e|the|of)\b/g;
+function basic(s){
+  return s.toLowerCase()
+    .replace(/c\+\+/g,' c plus plus ').replace(/#/g,' sharp ').replace(/\+/g,' plus ')
+    .normalize('NFD').replace(/[̀-ͯ]/g,'')
+    .replace(/[^a-z0-9]+/g,' ').replace(/\s+/g,' ').trim();
+}
+function variants(s){ const b=basic(s); const st=b.replace(STOP,' ').replace(/\s+/g,' ').trim(); return [b, st||b]; }
+function lev(a,b){
+  const m=a.length,n=b.length; if(!m) return n; if(!n) return m;
+  let prev=Array.from({length:n+1},(_,j)=>j);
+  for(let i=1;i<=m;i++){ const cur=[i]; for(let j=1;j<=n;j++){ cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1)); } prev=cur; }
+  return prev[n];
+}
+function sim(a,b){
+  if(!a||!b) return 0;
+  if(a===b) return 1;
+  if(Math.min(a.length,b.length)<=3) return 0;
+  if(a.includes(b)||b.includes(a)) return 0.9;
+  return 1-lev(a,b)/Math.max(a.length,b.length);
+}
+function findBest(typed, top){
+  const tv=variants(typed); let best={idx:-1,score:0};
+  top.a.forEach((names,idx)=>names.forEach(nm=>{
+    const nv=variants(nm); const sc=Math.max(sim(tv[0],nv[0]),sim(tv[1],nv[1]));
+    if(sc>best.score) best={idx,score:sc};
+  }));
+  return best.score>=0.78?best:null;
+}
+
+/* ---------- Ícones ---------- */
+const I = {
+  undo:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>',
+  menu:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
+  up:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15 6-6 6 6"/></svg>',
+  x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  minus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 12h12"/></svg>',
+  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 12h12M12 6v12"/></svg>',
+  glass:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16l-8 9z"/><path d="M12 13v7M8 20h8"/><path d="M15.5 4 18 1.5"/></svg>',
+  eye:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+  skip:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l9 7-9 7z"/><path d="M19 5v14"/></svg>',
+  crown:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/><path d="M5 19h14"/></svg>'
+};
+
+/* ---------- Estado ---------- */
+const LS='top10:v1';
+const EXAMPLE=['Ana','Bruno','Carla','Diego'];
+function loadPrefs(){ try{ return JSON.parse(localStorage.getItem(LS))||{}; }catch(e){ return {}; } }
+const P=loadPrefs();
+let S = {
+  screen:'setup',
+  names: Array.isArray(P.names)&&P.names.length?P.names:EXAMPLE.slice(),
+  mode: P.mode==='drinks'?'drinks':'classic',
+  intensity: P.intensity===2?2:1,
+  judge: !!P.judge,
+  target: P.target>=1&&P.target<=7?P.target:3,
+  cats: Array.isArray(P.cats)&&P.cats.length?[...new Set(P.cats.map(c=>c==='desafio'||c==='historia'?'curio':c).filter(c=>CAT_LABEL[c]))]:CATS.map(c=>c[0]),
+  used: Array.isArray(P.used)?P.used:[],
+  players:[], roundNo:0, starterIdx:0, R:null, lastWinner:null,
+  sheet:null
+};
+let H=[]; let focusId=null; let wake=null;
+
+function savePrefs(){ try{ localStorage.setItem(LS, JSON.stringify({names:S.names,mode:S.mode,intensity:S.intensity,judge:S.judge,target:S.target,cats:S.cats,used:S.used})); }catch(e){} }
+function snap(){ H.push(JSON.stringify({players:S.players,roundNo:S.roundNo,starterIdx:S.starterIdx,R:S.R,screen:S.screen,lastWinner:S.lastWinner})); if(H.length>60) H.shift(); }
+function undo(){ const s=H.pop(); if(!s) return; Object.assign(S, JSON.parse(s)); S.sheet=null; toast('Ação desfeita'); render(); }
+
+const esc = s => String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pName = id => (S.players.find(p=>p.id===id)||{}).name||'';
+const curTop = () => TOPS[S.R.topId];
+const goles = n => `${n} ${n>1?'goles':'gole'}`;
+const drinks = () => S.mode==='drinks';
+
+/* ---------- Lógica do jogo ---------- */
+function deckPool(){ return TOPS.filter(t=>S.cats.includes(t.c)); }
+function drawTop(){
+  const pool=deckPool();
+  let avail=pool.filter(t=>!S.used.includes(t.id));
+  if(!avail.length){ S.used=S.used.filter(id=>!pool.some(t=>t.id===id)); avail=pool; }
+  const pick=avail[Math.floor(Math.random()*avail.length)];
+  S.used.push(pick.id); savePrefs();
+  return pick.id;
+}
+function newRound(keepNumber){
+  if(!keepNumber) S.roundNo++;
+  const starter=S.players[S.starterIdx % S.players.length].id;
+  S.R={topId:drawTop(), active:S.players.map(p=>p.id), out:[], turn:starter, starter, revealed:{}};
+}
+function nextAfter(id){
+  const order=S.players.map(p=>p.id), n=order.length; const i=order.indexOf(id);
+  for(let k=1;k<=n;k++){ const c=order[(i+k)%n]; if(S.R.active.includes(c)&&c!==id) return c; }
+  return null;
+}
+function elim(id){ S.R.active=S.R.active.filter(x=>x!==id); S.R.out.push(id); }
+
+function startMatch(){
+  const names=S.names.filter(n=>n.trim());
+  if(names.length<2) return;
+  S.players=names.map((n,i)=>({id:'p'+i, name:n.trim(), pts:0}));
+  S.roundNo=0; S.starterIdx=0; S.lastWinner=null; H=[];
+  newRound(); S.screen='game'; S.sheet=null;
+  requestWake(); render();
+}
+function answered(){
+  snap(); const nx=nextAfter(S.R.turn); S.R.turn=nx; toast(`Vez de ${pName(nx)}`); render();
+}
+function leave(){
+  snap(); const id=S.R.turn; elim(id); S.R.turn=nextAfter(id)||S.R.active[0];
+  S.sheet={type:'result',kind:'leave',ans:id}; render();
+}
+function resolve(inTop, idx, repeat){
+  snap(); const ans=S.R.turn, d=S.sheet.doubter;
+  if(inTop){ S.R.revealed[idx]=ans; elim(d); S.R.turn=nextAfter(ans)||ans; S.sheet={type:'result',kind:'in',idx,ans,d}; }
+  else { elim(ans); S.R.turn=nextAfter(ans)||S.R.active[0]; S.sheet={type:'result',kind:'out',ans,d,repeat:!!repeat,idx}; }
+  render();
+}
+function afterResult(){
+  S.sheet=null;
+  if(S.R.active.length===1){
+    const w=S.R.active[0]; const p=S.players.find(x=>x.id===w); p.pts++; S.lastWinner=w;
+    S.screen = p.pts>=S.target ? 'champion' : 'roundEnd';
+    if(navigator.vibrate) try{ navigator.vibrate(60); }catch(e){}
+  }
+  render();
+}
+function nextRound(){ snap(); S.starterIdx++; newRound(); S.screen='game'; render(); }
+function skipTop(){ snap(); newRound(true); S.sheet=null; toast('Top pulado: novo tema na mesa'); render(); }
+function playAgain(){ S.players.forEach(p=>p.pts=0); S.roundNo=0; S.starterIdx=0; S.lastWinner=null; H=[]; newRound(); S.screen='game'; render(); }
+function toSetup(){ S.screen='setup'; S.sheet=null; H=[]; render(); }
+
+async function requestWake(){ try{ if('wakeLock' in navigator && !wake){ wake=await navigator.wakeLock.request('screen'); wake.addEventListener('release',()=>{wake=null;}); } }catch(e){} }
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible' && S.screen!=='setup') requestWake(); });
+
+let tt;
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove('show'),1500); }
+
+/* ---------- Telas ---------- */
+function pips(n){ let h='<span class="pips" aria-label="'+n+' de '+S.target+' pontos">'; for(let i=0;i<S.target;i++) h+=`<i class="${i<n?'f':''}"></i>`; return h+'</span>'; }
+
+function vSetup(){
+  const n=S.names.length, isEx=S.names.join()==EXAMPLE.join();
+  const pool=deckPool().length;
+  return `
+  <div class="scroll">
+    <header class="hero">
+      <div class="logo" aria-label="Top 10"><span class="l-top">TOP</span><span class="l-10">10</span></div>
+      <p class="tag">Diga uma resposta do ranking. Duvide se tiver coragem.</p>
+    </header>
+
+    <section class="card" aria-labelledby="h-pl">
+      <div class="sec-h"><h2 id="h-pl">Jogadores</h2><span class="hint">${n} na roda</span></div>
+      <div class="add-row">
+        <input type="text" id="pname" maxlength="16" placeholder="Nome de quem vai jogar" autocomplete="off" enterkeyhint="done" aria-label="Nome do jogador">
+        <button class="btn primary sm" data-act="addName">Adicionar</button>
+      </div>
+      <ol class="names">
+        ${S.names.map((nm,i)=>`<li><span class="seat">${i+1}</span><span class="nm">${esc(nm)}</span>
+          <button class="mini" data-act="nameUp" data-arg="${i}" ${i===0?'disabled':''} aria-label="Subir ${esc(nm)}">${I.up}</button>
+          <button class="mini" data-act="nameDel" data-arg="${i}" aria-label="Remover ${esc(nm)}">${I.x}</button></li>`).join('')}
+      </ol>
+      <p class="hint">${isEx?'Nomes de exemplo: troque pelos da sua roda. ':''}A vez passa nesta ordem, como na roda.</p>
+    </section>
+
+    <section class="card" aria-labelledby="h-md">
+      <h2 id="h-md">Modo</h2>
+      <div class="seg">
+        <button class="${S.mode==='classic'?'on':''}" data-act="mode" data-arg="classic" aria-pressed="${S.mode==='classic'}"><b>Clássico</b><small>Só a disputa</small></button>
+        <button class="${S.mode==='drinks'?'on':''}" data-act="mode" data-arg="drinks" aria-pressed="${S.mode==='drinks'}"><b>Drinks</b><small>Quem sai da rodada, bebe</small></button>
+      </div>
+      ${drinks()?`
+      <div class="seg">
+        <button class="${S.intensity===1?'on':''}" data-act="intensity" data-arg="1"><b>Leve</b><small>1 gole por erro</small></button>
+        <button class="${S.intensity===2?'on':''}" data-act="intensity" data-arg="2"><b>Forte</b><small>Tudo em dobro</small></button>
+      </div>
+      <p class="hint">Vale qualquer bebida, inclusive água. Beba com moderação e não dirija.</p>`:''}
+    </section>
+
+    <section class="card" aria-labelledby="h-jz">
+      <h2 id="h-jz">Quem confere as respostas</h2>
+      <div class="seg">
+        <button class="${!S.judge?'on':''}" data-act="judge" data-arg="0" aria-pressed="${!S.judge}"><b>O app</b><small>Digita a resposta e o app confere sem mostrar a lista</small></button>
+        <button class="${S.judge?'on':''}" data-act="judge" data-arg="1" aria-pressed="${S.judge}"><b>Um juiz</b><small>O juiz vê as 10 respostas e decide</small></button>
+      </div>
+      ${S.judge?'<p class="hint">O juiz não joga: deixe o nome dele fora da lista de jogadores e passe o celular para ele nas dúvidas.</p>':''}
+    </section>
+
+    <section class="card" aria-labelledby="h-pt">
+      <h2 id="h-pt">Pontos para vencer</h2>
+      <div class="stepper">
+        <button class="icon" data-act="target" data-arg="-1" aria-label="Menos pontos" ${S.target<=1?'disabled':''}>${I.minus}</button>
+        <span class="val" aria-live="polite">${S.target}</span>
+        <button class="icon" data-act="target" data-arg="1" aria-label="Mais pontos" ${S.target>=7?'disabled':''}>${I.plus}</button>
+        <span class="hint">Cada rodada vencida vale 1 ponto</span>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="h-tm">
+      <div class="sec-h"><h2 id="h-tm">Temas</h2><button class="link" data-act="allCats">${S.cats.length===CATS.length?'Limpar':'Todos'}</button></div>
+      <div class="chips">
+        ${CATS.map(([k,l])=>`<button class="chip ${S.cats.includes(k)?'on':''}" data-act="cat" data-arg="${k}" aria-pressed="${S.cats.includes(k)}">${l}<span>${TOPS.filter(t=>t.c===k).length}</span></button>`).join('')}
+      </div>
+      <p class="hint">${pool} tops no baralho. Os já jogados ficam para o fim da fila.</p>
+    </section>
+  </div>
+  <div class="foot">
+    <button class="btn primary big" data-act="start" ${n<2||!pool?'disabled':''}>${n<2?'Adicione pelo menos 2 jogadores':!pool?'Escolha pelo menos um tema':'Começar partida'}</button>
+    <button class="btn quiet" data-act="rules">Como jogar</button>
+  </div>`;
+}
+
+function vBoard(revealAll){
+  const t=curTop(); let h='<div class="board">';
+  t.a.forEach((names,i)=>{
+    const by=S.R.revealed[i];
+    if(by!==undefined) h+=`<div class="slot on"><span class="num">${i+1}</span><span class="txt">${esc(names[0])}<small>${esc(pName(by))}</small></span></div>`;
+    else if(revealAll) h+=`<div class="slot miss"><span class="num">${i+1}</span><span class="txt">${esc(names[0])}</span></div>`;
+    else h+=`<div class="slot hid"><span class="num">${i+1}</span><span class="txt">•••</span></div>`;
+  });
+  return h+'</div>';
+}
+
+function vGame(){
+  const t=curTop(), R=S.R;
+  const count=Object.keys(R.revealed).length;
+  return `
+  <div class="topbar">
+    <div class="rd"><span class="eyebrow">Rodada</span><b>${S.roundNo}</b></div>
+    <div class="tb-actions">
+      <button class="icon" data-act="undo" ${H.length?'':'disabled'} aria-label="Desfazer">${I.undo}</button>
+      <button class="icon" data-act="menu" aria-label="Menu">${I.menu}</button>
+    </div>
+  </div>
+  <div class="scroll">
+    <section class="top-card">
+      <span class="eyebrow">${CAT_LABEL[t.c]} · ${count}/10 confirmadas</span>
+      <h1>${esc(t.t)}</h1>
+      ${t.n?`<p class="note">${esc(t.n)}</p>`:''}
+      <div class="tc-actions">
+        <button class="tc-btn" data-act="askSkip">${I.skip}Pular este top</button>
+        ${S.judge?`<button class="tc-btn judge" data-act="judgeView">${I.eye}Ver respostas (juiz)</button>`:''}
+      </div>
+    </section>
+    ${vBoard(false)}
+    <div class="pl" aria-label="Jogadores">
+      ${S.players.map(p=>{ const out=!R.active.includes(p.id), cur=p.id===R.turn;
+        return `<span class="pchip ${cur?'cur':''} ${out?'out':''}">${esc(p.name)} ${pips(p.pts)}</span>`; }).join('')}
+    </div>
+    ${drinks()?`<p class="drink-note">${I.glass}<span>Só bebe quem sai da rodada. Duvidaram e sua resposta não estava no Top 10: ${goles(S.intensity)}. Você duvidou e a resposta estava lá: ${goles(2*S.intensity)}. Passou, travou ou repetiu: ${goles(S.intensity)}.</span></p>`:''}
+  </div>
+  <div class="foot turn">
+    <div class="who"><span class="nm">${esc(pName(R.turn))}</span><span class="eyebrow">sua vez</span></div>
+    <div class="acts">
+      <button class="btn primary big" data-act="answered">Respondeu</button>
+      <button class="btn danger big" data-act="doubt">Alguém duvidou</button>
+    </div>
+    <button class="btn quiet" data-act="leave">Saiu da rodada (passou, travou ou repetiu)</button>
+  </div>`;
+}
+
+function scoreList(){
+  const arr=[...S.players].sort((a,b)=>b.pts-a.pts);
+  const max=arr[0].pts;
+  return `<ol class="score">${arr.map((p,i)=>`<li class="${p.pts===max&&max>0?'lead':''}"><span class="pos">${i+1}</span><span class="nm">${esc(p.name)}</span>${pips(p.pts)}<span class="pts">${p.pts}</span></li>`).join('')}</ol>`;
+}
+
+function vRoundEnd(){
+  const w=S.lastWinner, nextStarter=S.players[(S.starterIdx+1)%S.players.length];
+  return `
+  <div class="scroll">
+    <header class="win-hero">
+      <span class="crown">${I.crown}</span>
+      <span class="eyebrow">Rodada ${S.roundNo}</span>
+      <span class="nm">${esc(pName(w))}</span>
+      <p>ficou por último e ganha 1 ponto.</p>
+    </header>
+    ${drinks()?`<p class="penalty">${I.glass}<span>${esc(pName(w))} distribui ${goles(3*S.intensity)} para a roda.</span></p>`:''}
+    <section class="card"><h2>Placar · vence com ${S.target}</h2>${scoreList()}</section>
+    <section class="stack" style="display:flex;flex-direction:column;gap:10px">
+      <h2>O Top 10 completo: ${esc(curTop().t)}</h2>
+      ${vBoard(true)}
+    </section>
+  </div>
+  <div class="foot">
+    <button class="btn primary big" data-act="nextRound">Próxima rodada · começa ${esc(nextStarter.name)}</button>
+    <button class="btn quiet" data-act="undo" ${H.length?'':'disabled'}>Desfazer o último lance</button>
+  </div>`;
+}
+
+function vChampion(){
+  const w=S.lastWinner;
+  return `
+  <div class="scroll">
+    <header class="win-hero">
+      <span class="crown">${I.crown}</span>
+      <span class="eyebrow">Fim de partida</span>
+      <span class="nm">${esc(pName(w))}</span>
+      <p>fez ${S.target} ${S.target>1?'pontos':'ponto'} primeiro e venceu o Top 10.</p>
+    </header>
+    ${drinks()?`<p class="penalty">${I.glass}<span>Brinde final: todo mundo bebe ${goles(S.intensity)}, menos ${esc(pName(w))}.</span></p>`:''}
+    <section class="card"><h2>Placar final</h2>${scoreList()}</section>
+    <section style="display:flex;flex-direction:column;gap:10px">
+      <h2>Último top: ${esc(curTop().t)}</h2>
+      ${vBoard(true)}
+    </section>
+  </div>
+  <div class="foot">
+    <button class="btn primary big" data-act="playAgain">Jogar de novo com a mesma roda</button>
+    <div class="acts" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button class="btn ghost" data-act="toSetup">Mudar jogadores</button>
+      <button class="btn ghost" data-act="undo" ${H.length?'':'disabled'}>Desfazer</button>
+    </div>
+  </div>`;
+}
+
+/* ---------- Folhas (sheets) ---------- */
+function vSheet(){
+  const s=S.sheet;
+  if(s.type==='rules') return `<div class="sheet" role="dialog" aria-label="Como jogar"><div class="grab"></div>
+    <h2>Como jogar</h2>
+    <ol class="rules">
+      <li>O app sorteia um tema com 10 respostas escondidas. A rodada começa por quem está na vez e segue a ordem da roda.</li>
+      <li>Cada um diz em voz alta uma resposta que acha que está no Top 10. Ninguém duvidou? Toque em <b>Respondeu</b> e passa a vez.</li>
+      <li>Se alguém duvidar, toque em <b>Alguém duvidou</b>, escolha quem duvidou e digite a resposta. O app confere sem mostrar o resto da lista.</li>
+      <li>Está no Top 10: quem duvidou sai da rodada. Não está: quem respondeu sai.</li>
+      <li>Quem passar, travar ou repetir uma resposta também sai.</li>
+      <li>Tem juiz? Escolha <b>Um juiz</b> no início: ele vê as 10 respostas em <b>Ver respostas</b> e decide as dúvidas tocando na lista.</li>
+      <li>O grupo não curtiu o tema? <b>Pular este top</b> sorteia outro e recomeça a rodada, sem mexer no placar.</li>
+      <li>O último que sobrar ganha 1 ponto. Quem chegar a ${S.target} ${S.target>1?'pontos':'ponto'} primeiro vence a partida.</li>
+    </ol>
+    <h2 style="font-size:17px">Modo drinks</h2>
+    <ol class="rules">
+      <li>Só bebe quem sai da rodada, e só sai quem perdeu uma dúvida ou passou a vez. Se ninguém duvidar, a resposta vale e ninguém bebe.</li>
+      <li>Alguém duvidou e a resposta não estava no Top 10: quem respondeu bebe 1 gole.</li>
+      <li>Duvidou e a resposta estava no Top 10: quem duvidou bebe 2 goles. Duvidar custa caro.</li>
+      <li>Passou, travou ou repetiu uma resposta: 1 gole.</li>
+      <li>Quem vence a rodada distribui 3 goles. No fim, todo mundo brinda menos o campeão.</li>
+      <li>No modo Forte, tudo em dobro. Vale água.</li>
+    </ol>
+    <p class="hint">Tocou errado? O botão de voltar no topo desfaz o último lance.</p>
+    <button class="btn primary" data-act="close">Entendi</button></div>`;
+
+  if(s.type==='menu') return `<div class="sheet" role="dialog" aria-label="Menu"><div class="grab"></div>
+    <h2>Rodada ${S.roundNo}</h2>
+    <div class="menu-list">
+      <button class="btn ghost" data-act="undo" ${H.length?'':'disabled'}>Desfazer o último lance</button>
+      <button class="btn ghost" data-act="askSkip">Pular este top</button>
+      <button class="btn ghost" data-act="judgeView">Ver respostas (juiz)</button>
+      <button class="btn ghost" data-act="judgeToggle">${S.judge?'Desligar modo juiz':'Ligar modo juiz'}</button>
+      <button class="btn ghost" data-act="scores">Ver placar</button>
+      <button class="btn ghost" data-act="rules">Como jogar</button>
+      <button class="btn ghost" data-act="askQuit" style="color:var(--miss)">Encerrar partida</button>
+    </div>
+    <button class="btn quiet" data-act="close">Fechar</button></div>`;
+
+  if(s.type==='scores') return `<div class="sheet" role="dialog" aria-label="Placar"><div class="grab"></div>
+    <h2>Placar · vence com ${S.target}</h2>${scoreList()}
+    <button class="btn primary" data-act="close">Voltar ao jogo</button></div>`;
+
+  if(s.type==='quit') return `<div class="sheet" role="dialog" aria-label="Encerrar partida"><div class="grab"></div>
+    <h2>Encerrar a partida?</h2><p class="muted">O placar atual será perdido. Os jogadores continuam salvos.</p>
+    <div class="stack"><button class="btn danger" data-act="toSetup">Encerrar e voltar ao início</button>
+    <button class="btn ghost" data-act="close">Continuar jogando</button></div></div>`;
+
+  if(s.type==='skip'){
+    const started=Object.keys(S.R.revealed).length>0 || S.R.out.length>0 || S.R.turn!==S.R.starter;
+    return `<div class="sheet" role="dialog" aria-label="Pular top"><div class="grab"></div>
+    <span class="eyebrow">${esc(curTop().t)}</span>
+    <h2>Pular este top?</h2>
+    <p class="muted">O app sorteia outro tema e a rodada ${started?'recomeça do zero, com todo mundo de volta, ':''}começando por ${esc(pName(S.R.starter))}. Ninguém ganha ou perde ponto.</p>
+    <div class="stack"><button class="btn primary big" data-act="skipTop">Pular e sortear outro</button>
+    <button class="btn ghost" data-act="close">Continuar com este</button></div></div>`;
+  }
+  if(s.type==='judge'){
+    const t=curTop();
+    return `<div class="sheet" role="dialog" aria-label="Respostas para o juiz"><div class="grab"></div>
+    <span class="judge-tag">${I.eye} Só o juiz olha</span>
+    <h2>${esc(t.t)}</h2>
+    ${t.n?`<p class="hint">${esc(t.n)}</p>`:''}
+    <ul class="full">${t.a.map((names,i)=>{ const by=S.R.revealed[i];
+      return `<li><button tabindex="-1" style="cursor:default"><span class="num">${i+1}</span><span>${esc(names[0])}${names.length>1?`<small style="display:block;color:var(--muted);font-weight:500;font-size:12px">também vale: ${esc(names.slice(1).join(', '))}</small>`:''}</span>${by!==undefined?`<span class="tag2">já saiu · ${esc(pName(by))}</span>`:''}</button></li>`; }).join('')}</ul>
+    <button class="btn primary" data-act="close">Esconder respostas</button></div>`;
+  }
+  if(s.type==='doubt') return vDoubt(s);
+  if(s.type==='result') return vResult(s);
+  return '';
+}
+
+function vDoubt(s){
+  const ans=pName(S.R.turn), t=curTop();
+  const head=`<div class="grab"></div><span class="eyebrow">${esc(t.t)}</span>`;
+  if(s.step==='who'){
+    const others=S.R.active.filter(id=>id!==S.R.turn);
+    return `<div class="sheet" role="dialog" aria-label="Quem duvidou">${head}
+      <h2>Quem duvidou de ${esc(ans)}?</h2>
+      <div class="pick">${others.map(id=>`<button data-act="pickDoubter" data-arg="${id}">${esc(pName(id))}</button>`).join('')}</div>
+      <button class="btn quiet" data-act="close">Cancelar</button></div>`;
+  }
+  if(s.step==='answer'){
+    return `<div class="sheet" role="dialog" aria-label="Conferir resposta">${head}
+      <h2>O que ${esc(ans)} respondeu?</h2>
+      <p class="muted">${esc(pName(s.doubter))} duvidou. Digite a resposta para o app conferir sem mostrar a lista.</p>
+      <input type="text" id="ans" placeholder="Digite a resposta" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go" value="${esc(s.typed||'')}" aria-label="Resposta dita">
+      <button class="btn primary big" data-act="check">Conferir</button>
+      <button class="btn quiet" data-act="showList">Conferir na lista completa (mostra tudo)</button>
+      <button class="btn quiet" data-act="close">Cancelar</button></div>`;
+  }
+  if(s.step==='match'){
+    const idx=s.matchIdx, nm=t.a[idx][0], already=S.R.revealed[idx]!==undefined;
+    return `<div class="sheet" role="dialog" aria-label="Resultado da busca">${head}
+      <h2>${already?'Essa já tinha saído':'Achamos no Top 10'}</h2>
+      <div class="match"><span class="num">${idx+1}</span><b>${esc(nm)}</b></div>
+      ${already?`<p class="muted">${esc(pName(S.R.revealed[idx]))} já falou essa resposta. Resposta repetida tira ${esc(ans)} da rodada.</p>
+        <div class="stack"><button class="btn danger big" data-act="confirmRepeat">Repetida: ${esc(ans)} sai</button>
+        <button class="btn ghost" data-act="notThis">Não, era outra resposta</button></div>`
+      :`<p class="muted">Foi isso que ${esc(ans)} quis dizer?</p>
+        <div class="stack"><button class="btn hit big" data-act="confirmIn">Sim, está no Top 10</button>
+        <button class="btn ghost" data-act="notThis">Não, era outra coisa</button></div>`}
+      </div>`;
+  }
+  if(s.step==='nomatch'){
+    return `<div class="sheet" role="dialog" aria-label="Não encontrada">${head}
+      <h2>“${esc(s.typed)}” não aparece no Top 10</h2>
+      <p class="muted">${s.retried?'Você indicou que não era a sugestão anterior.':'Nada parecido com essa resposta na lista.'} Se tiver dúvida de grafia, abra a lista completa.</p>
+      <div class="stack"><button class="btn danger big" data-act="confirmOut">Confirmar: ${esc(ans)} sai</button>
+      <button class="btn ghost" data-act="retype">Digitar de novo</button>
+      <button class="btn quiet" data-act="showList">Conferir na lista completa (mostra tudo)</button></div></div>`;
+  }
+  if(s.step==='list'){
+    return `<div class="sheet" role="dialog" aria-label="Lista completa">${head}
+      <h2>${S.judge?'Juiz, ':''}toque na resposta de ${esc(ans)}</h2>
+      <p class="muted">${S.judge?`${esc(pName(s.doubter))} duvidou. A lista inteira fica visível: só o juiz olha.`:'A lista inteira fica visível. Peça para só quem está conferindo olhar.'}</p>
+      <ul class="full">${t.a.map((names,i)=>{ const by=S.R.revealed[i];
+        return `<li><button data-act="listPick" data-arg="${i}"><span class="num">${i+1}</span><span>${esc(names[0])}</span>${by!==undefined?`<span class="tag2">já saiu</span>`:''}</button></li>`; }).join('')}</ul>
+      <button class="btn danger big" data-act="confirmOut">Não está na lista: ${esc(ans)} sai</button>
+      ${S.judge?`<button class="btn quiet" data-act="retype">Prefiro digitar a resposta</button>`:''}
+      <button class="btn quiet" data-act="close">Cancelar</button></div>`;
+  }
+  return '';
+}
+
+function vResult(s){
+  const t=curTop(), m=S.intensity;
+  let cls, big, line, pen='';
+  if(s.kind==='in'){ cls='in'; big='Tá no Top 10!'; line=`${esc(pName(s.d))} duvidou e sai da rodada.`; if(drinks()) pen=`${esc(pName(s.d))} bebe ${goles(2*m)}.`; }
+  else if(s.kind==='out'){ cls='out'; big=s.repeat?'Repetida!':'Fora do Top 10!'; line=`${esc(pName(s.ans))} sai da rodada.`+(s.repeat?'':` ${esc(pName(s.d))} acertou na dúvida.`); if(drinks()) pen=`${esc(pName(s.ans))} bebe ${goles(m)}.`; }
+  else { cls='neutral'; big='Saiu da rodada'; line=`${esc(pName(s.ans))} passou a vez e está fora até o fim da rodada.`; if(drinks()) pen=`${esc(pName(s.ans))} bebe ${goles(m)}.`; }
+  const last=S.R.active.length===1;
+  return `<div class="sheet" role="dialog" aria-label="Resultado">
+    <div class="verdict ${cls}"><span class="big">${big}</span>
+      ${s.kind==='in'?`<p>#${s.idx+1} ${esc(t.a[s.idx][0])}</p>`:''}
+      <p>${line}</p></div>
+    ${pen?`<p class="penalty">${I.glass}<span>${pen}</span></p>`:''}
+    ${last?`<p class="muted">Só sobrou ${esc(pName(S.R.active[0]))}. Fim da rodada.</p>`:`<p class="muted">Agora é a vez de <b style="color:var(--text)">${esc(pName(S.R.turn))}</b>. Restam ${S.R.active.length} na rodada.</p>`}
+    <button class="btn primary big" data-act="afterResult">${last?'Ver quem venceu':'Continuar'}</button>
+    <button class="btn quiet" data-act="undo">Desfazer</button></div>`;
+}
+
+/* ---------- Render e eventos ---------- */
+function render(){
+  document.documentElement.dataset.mode=S.mode;
+  const app=document.getElementById('app');
+  const sc=app.querySelector('.scroll'); const keep=sc?sc.scrollTop:0; const sameScreen=app.dataset.screen===S.screen;
+  app.dataset.screen=S.screen;
+  app.innerHTML = S.screen==='setup'?vSetup():S.screen==='game'?vGame():S.screen==='roundEnd'?vRoundEnd():vChampion();
+  if(sameScreen){ const n=app.querySelector('.scroll'); if(n) n.scrollTop=keep; }
+  const ov=document.getElementById('ov');
+  ov.innerHTML=S.sheet?vSheet():''; ov.hidden=!S.sheet;
+  if(focusId){ const el=document.getElementById(focusId); if(el){ el.focus(); } focusId=null; }
+}
+
+const ACT = {
+  addName(){ const el=document.getElementById('pname'); const v=(el.value||'').trim(); if(!v){ el.focus(); return; }
+    if(S.names.join()==EXAMPLE.join()) S.names=[]; S.names.push(v.slice(0,16)); savePrefs(); focusId='pname'; render(); },
+  nameDel(i){ S.names.splice(+i,1); savePrefs(); render(); },
+  nameUp(i){ i=+i; if(i>0){ [S.names[i-1],S.names[i]]=[S.names[i],S.names[i-1]]; savePrefs(); render(); } },
+  mode(m){ S.mode=m; savePrefs(); render(); },
+  intensity(v){ S.intensity=+v; savePrefs(); render(); },
+  target(d){ S.target=Math.min(7,Math.max(1,S.target+(+d))); savePrefs(); render(); },
+  cat(k){ S.cats=S.cats.includes(k)?S.cats.filter(c=>c!==k):[...S.cats,k]; savePrefs(); render(); },
+  allCats(){ S.cats=S.cats.length===CATS.length?[]:CATS.map(c=>c[0]); savePrefs(); render(); },
+  start(){ startMatch(); },
+  rules(){ S.sheet={type:'rules'}; render(); },
+  menu(){ S.sheet={type:'menu'}; render(); },
+  scores(){ S.sheet={type:'scores'}; render(); },
+  askQuit(){ S.sheet={type:'quit'}; render(); },
+  close(){ S.sheet=null; render(); },
+  undo(){ undo(); },
+  answered(){ answered(); },
+  leave(){ leave(); },
+  doubt(){ const others=S.R.active.filter(id=>id!==S.R.turn);
+    if(others.length===1) ACT.pickDoubter(others[0]);
+    else { S.sheet={type:'doubt',step:'who'}; render(); } },
+  pickDoubter(id){ S.sheet={type:'doubt',step:S.judge?'list':'answer',doubter:id,typed:''}; if(!S.judge) focusId='ans'; render(); },
+  judge(v){ S.judge=v==='1'; savePrefs(); render(); },
+  judgeToggle(){ S.judge=!S.judge; savePrefs(); S.sheet=null; toast(S.judge?'Modo juiz ligado':'Modo juiz desligado'); render(); },
+  judgeView(){ S.sheet={type:'judge'}; render(); },
+  askSkip(){ S.sheet={type:'skip'}; render(); },
+  check(){ const el=document.getElementById('ans'); const v=(el&&el.value||'').trim(); S.sheet.typed=v;
+    if(!v){ focusId='ans'; render(); return; }
+    const b=findBest(v, curTop());
+    if(b){ S.sheet.step='match'; S.sheet.matchIdx=b.idx; } else { S.sheet.step='nomatch'; S.sheet.retried=false; }
+    render(); },
+  notThis(){ S.sheet.step='nomatch'; S.sheet.retried=true; render(); },
+  retype(){ S.sheet.step='answer'; focusId='ans'; render(); },
+  showList(){ S.sheet.step='list'; render(); },
+  listPick(i){ i=+i; S.sheet.matchIdx=i; S.sheet.step='match'; render(); },
+  confirmIn(){ resolve(true, S.sheet.matchIdx); },
+  confirmOut(){ resolve(false, null, false); },
+  confirmRepeat(){ resolve(false, S.sheet.matchIdx, true); },
+  afterResult(){ afterResult(); },
+  skipTop(){ skipTop(); },
+  nextRound(){ nextRound(); },
+  playAgain(){ playAgain(); },
+  toSetup(){ toSetup(); }
+};
+
+document.addEventListener('click', e=>{
+  const b=e.target.closest('[data-act]');
+  if(b){ if(b.disabled) return; const f=ACT[b.dataset.act]; if(f) f(b.dataset.arg); return; }
+  if(e.target.id==='ov' && S.sheet && S.sheet.type!=='result'){ S.sheet=null; render(); }
+});
+document.addEventListener('keydown', e=>{
+  if(e.key==='Enter'){
+    if(e.target.id==='pname'){ e.preventDefault(); ACT.addName(); }
+    else if(e.target.id==='ans'){ e.preventDefault(); ACT.check(); }
+  }
+  if(e.key==='Escape' && S.sheet && S.sheet.type!=='result'){ S.sheet=null; render(); }
+});
+document.addEventListener('input', e=>{ if(e.target.id==='ans' && S.sheet) S.sheet.typed=e.target.value; });
+
+/* ---------- Inicialização (preserva a partida em atualizações da página) ---------- */
+function start(data){
+  if(data && data.S){ S=Object.assign(S,data.S); H=data.H||[]; }
+  render();
+}
+try{ window.claude?.hot?.snapshot?.(()=>({S,H})); }catch(e){}
+window.claude?.hot?.ready ? window.claude.hot.ready(start) : start(window.claude?.hot?.data ?? {});
+})();
+</script>
+
+</body>
+</html>
