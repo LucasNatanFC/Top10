@@ -28,11 +28,16 @@ Jogo de roda para celular. O app sorteia um ranking com 10 respostas escondidas.
 
 São 100 tops ordenados por métrica (área, população, vendas, gols, ouvintes etc.), divididos em Mundo, Brasil, Esportes, Ciência, Cultura pop, Economia, Curiosidades e Bar & café. Cada card mostra a fonte e o ano dos dados. Os rankings que mudam com o tempo refletem os dados de outubro de 2026.
 
-## Como rodar
+## Como instalar no celular
 
-O jogo inteiro está no arquivo `index.html`, que funciona sozinho:
+1. Ative o GitHub Pages: no navegador, abra o repositório e vá em *Settings → Pages*. Em "Branch", escolha `main` e a pasta `/ (root)` e salve.
+2. Espere um ou dois minutos e abra **https://lucasnatanfc.github.io/Top10/** no celular.
+3. Instale:
+   - **Android (Chrome):** toque em *Instalar app*, que aparece na tela ou no menu ⋮. Também vale *Adicionar à tela inicial*.
+   - **iPhone (Safari):** toque em Compartilhar e depois em *Adicionar à Tela de Início*.
 
-- **No computador ou celular:** abra o `index.html` no navegador.
-- **Online:** ative o GitHub Pages em *Settings → Pages* (branch `main`, pasta raiz) e abra o link gerado no celular.
+O jogo ganha ícone próprio, abre em tela cheia e funciona sem internet depois da primeira abertura.
 
-As fontes vêm do Google Fonts. Sem internet, o app funciona com as fontes do sistema.
+## Como rodar sem instalar
+
+Abra o `index.html` em qualquer navegador. O jogo inteiro está nesse arquivo. As fontes vêm do Google Fonts; sem internet, o app usa as fontes do sistema.
