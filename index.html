@@ -209,8 +209,6 @@ input[type=text]::placeholder{color:var(--muted);opacity:.8}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
-</head>
-<body>
 <div id="app"></div>
 <div id="ov" hidden></div>
 <div id="toast" role="status" aria-live="polite"></div>
@@ -232,7 +230,7 @@ const RAW = [
 ['mundo','Montanhas mais altas do mundo','Altitude acima do nível do mar','Everest;K2;Kangchenjunga|Kanchenjunga;Lhotse;Makalu;Cho Oyu;Dhaulagiri;Manaslu;Nanga Parbat;Annapurna'],
 ['mundo','Maiores ilhas do mundo','Austrália conta como continente','Groenlândia;Nova Guiné;Bornéu|Borneo;Madagascar|Madagáscar;Ilha de Baffin|Baffin;Sumatra;Honshu;Ilha Vitória|Victoria;Grã-Bretanha|Great Britain;Ilha Ellesmere|Ellesmere'],
 ['mundo','Maiores lagos do mundo','Por área','Mar Cáspio|Cáspio;Lago Superior|Superior;Lago Vitória|Vitória;Lago Huron|Huron;Lago Michigan|Michigan;Tanganica|Tanganyika;Baikal;Grande Lago do Urso|Lago do Urso;Lago Malawi|Malawi|Niassa;Grande Lago do Escravo|Lago do Escravo'],
-['mundo','Países mais visitados por turistas','Chegadas internacionais, ONU Turismo 2024','França;Espanha;Estados Unidos|EUA;Turquia;Itália;México;Reino Unido|Inglaterra;Alemanha;Japão;Grécia'],
+['curio','Países mais visitados por turistas','Chegadas internacionais, ONU Turismo 2024','França;Espanha;Estados Unidos|EUA;Turquia;Itália;México;Reino Unido|Inglaterra;Alemanha;Japão;Grécia'],
 ['mundo','Maiores países das Américas em área','Groenlândia não conta (não é país)','Canadá;Estados Unidos|EUA;Brasil;Argentina;México;Peru;Colômbia;Bolívia;Venezuela;Chile'],
 ['mundo','Maiores países da América do Sul em área','','Brasil;Argentina;Peru;Colômbia;Bolívia;Venezuela;Chile;Paraguai;Equador;Guiana'],
 ['mundo','Países mais populosos da América do Sul','ONU, 2024','Brasil;Colômbia;Argentina;Peru;Venezuela;Chile;Equador;Bolívia;Paraguai;Uruguai'],
@@ -248,8 +246,8 @@ const RAW = [
 ['mundo','Prédios mais altos do mundo','Altura arquitetônica','Burj Khalifa;Merdeka 118|Merdeka;Shanghai Tower|Torre de Xangai;Abraj Al-Bait|Torre do Relógio de Meca|Makkah Clock Tower;Ping An Finance Center|Ping An;Lotte World Tower|Lotte;One World Trade Center|One World Trade|Freedom Tower;Guangzhou CTF Finance Centre|Guangzhou CTF;Tianjin CTF Finance Centre|Tianjin CTF;CITIC Tower|China Zun'],
 ['mundo','Menores países do mundo','Por área, do menor para o maior','Vaticano;Mônaco;Nauru;Tuvalu;San Marino;Liechtenstein;Ilhas Marshall;São Cristóvão e Névis|São Cristóvão;Maldivas;Malta'],
 ['mundo','Maiores aglomerações urbanas do mundo','Região urbana, ONU 2018','Tóquio;Délhi|Nova Délhi|Delhi;Xangai;São Paulo;Cidade do México;Cairo;Mumbai|Bombaim;Pequim;Daca|Dhaka;Osaka'],
-['mundo','Países mais felizes do mundo','World Happiness Report 2025','Finlândia;Dinamarca;Islândia;Suécia;Holanda|Países Baixos;Costa Rica;Noruega;Israel;Luxemburgo;México'],
-['mundo','Países com mais Patrimônios da Humanidade','UNESCO','Itália;China;Alemanha;França;Espanha;Índia;México;Reino Unido|Inglaterra;Rússia;Irã'],
+['curio','Países mais felizes do mundo','World Happiness Report 2025','Finlândia;Dinamarca;Islândia;Suécia;Holanda|Países Baixos;Costa Rica;Noruega;Israel;Luxemburgo;México'],
+['curio','Países com mais Patrimônios da Humanidade','UNESCO','Itália;China;Alemanha;França;Espanha;Índia;México;Reino Unido|Inglaterra;Rússia;Irã'],
 ['mundo','Maiores países do mundo: do 11º ao 20º','Modo difícil · por área','RD Congo|República Democrática do Congo|Congo;Arábia Saudita;México;Indonésia;Sudão;Líbia;Irã;Mongólia;Peru;Chade'],
 ['mundo','Mais populosos do mundo: do 11º ao 20º','Modo difícil · ONU, 2024','México;Japão;Egito;Filipinas;RD Congo|República Democrática do Congo|Congo;Vietnã;Irã;Turquia;Alemanha;Tailândia'],
 ['mundo','Países mais populosos com espanhol oficial','EUA não contam','México;Colômbia;Espanha;Argentina;Peru;Venezuela;Chile;Guatemala;Equador;Bolívia'],
@@ -294,7 +292,7 @@ const RAW = [
 ['economia','Aeroportos mais movimentados do mundo','Passageiros, ACI 2024','Atlanta;Dubai;Dallas|Dallas Fort Worth;Tóquio Haneda|Haneda|Tóquio;Londres Heathrow|Heathrow|Londres;Denver;Chicago O\'Hare|O\'Hare|Chicago;Istambul;Nova Délhi|Délhi|Delhi;Xangai Pudong|Pudong|Xangai'],
 ['curio','Linguagens de programação mais usadas','Stack Overflow Survey 2024','JavaScript;HTML/CSS|HTML|CSS;Python;SQL;TypeScript;Bash/Shell|Bash|Shell;Java;C#|C Sharp;C++;C'],
 
-['bar','Maiores produtores de vinho','OIV 2023','França;Itália;Espanha;Estados Unidos|EUA;Chile;Austrália;África do Sul;Argentina;Alemanha;Portugal'],
+['bar','Maiores produtores de vinho','OIV 2024','Itália;França;Espanha;Estados Unidos|EUA;Austrália;Argentina;África do Sul;Chile;Alemanha;Portugal'],
 ['bar','Uvas de vinho mais plantadas do mundo','Área plantada, OIV','Cabernet Sauvignon|Cabernet;Merlot;Tempranillo;Airén;Chardonnay;Syrah|Shiraz;Grenache|Garnacha;Sauvignon Blanc;Pinot Noir;Trebbiano|Ugni Blanc'],
 ['bar','Maiores produtores de café','USDA, safras recentes','Brasil;Vietnã;Colômbia;Indonésia;Etiópia;Uganda;Honduras;Índia;Peru;México'],
 ['bar','Países que mais tomam café por pessoa','Consumo per capita','Finlândia;Noruega;Islândia;Dinamarca;Holanda|Países Baixos;Suécia;Suíça;Bélgica;Luxemburgo;Canadá'],
@@ -303,9 +301,9 @@ const RAW = [
 ['curio','Letras mais usadas no inglês','Frequência em textos','E;T;A;O;I;N;S;H;R;D'],
 ['mundo','Maiores desertos do mundo','Por área, incluindo os polares','Antártida|Deserto Antártico|Antártico;Ártico|Deserto Ártico;Saara;Deserto da Arábia|Arábico|Arábia;Gobi;Kalahari;Patagônia|Deserto da Patagônia;Grande Deserto de Victoria|Grande Victoria;Deserto da Síria|Sírio|Síria;Grande Bacia|Great Basin'],
 ['mundo','Cidades mais populosas dos EUA','Censo 2020','Nova York|New York;Los Angeles;Chicago;Houston;Phoenix;Filadélfia|Philadelphia;San Antonio;San Diego;Dallas;San Jose'],
-['mundo','Países com mais florestas','Área de floresta, FAO 2022','Rússia;Brasil;Canadá;Estados Unidos|EUA;China;Austrália;RD Congo|República Democrática do Congo|Congo;Indonésia;Índia;Peru'],
-['mundo','Países que mais emitem gases do efeito estufa','EDGAR (Comissão Europeia), 2024','China;Estados Unidos|EUA;Índia;Rússia;Indonésia;Brasil;Japão;Irã;Arábia Saudita;Canadá'],
-['mundo','Museus mais visitados do mundo','Visitantes em 2024 ou 2025','Louvre;Museu Nacional da China;Museus Vaticanos|Museu do Vaticano|Vaticano;Museu de Shenzhen|Shenzhen;Museu Nacional da Coreia;Museu Britânico|British Museum;Museu de Ciência e Tecnologia da China;Museu de História Natural de Londres|Natural History Museum;Metropolitan Museum of Art|Metropolitan|Met;Museu de Nanjing|Nanjing'],
+['ciencia','Países com mais florestas','Área de floresta, FAO 2022','Rússia;Brasil;Canadá;Estados Unidos|EUA;China;Austrália;RD Congo|República Democrática do Congo|Congo;Indonésia;Índia;Peru'],
+['ciencia','Países que mais emitem gases do efeito estufa','EDGAR (Comissão Europeia), 2024','China;Estados Unidos|EUA;Índia;Rússia;Indonésia;Brasil;Japão;Irã;Arábia Saudita;Canadá'],
+['curio','Museus mais visitados do mundo','Visitantes em 2024 ou 2025','Louvre;Museu Nacional da China;Museus Vaticanos|Museu do Vaticano|Vaticano;Museu de Shenzhen|Shenzhen;Museu Nacional da Coreia;Museu Britânico|British Museum;Museu de Ciência e Tecnologia da China;Museu de História Natural de Londres|Natural History Museum;Metropolitan Museum of Art|Metropolitan|Met;Museu de Nanjing|Nanjing'],
 
 ['brasil','Maiores municípios do Brasil em área','IBGE','Altamira;Barcelos;São Gabriel da Cachoeira;Oriximiná;Tapauá;São Félix do Xingu;Atalaia do Norte;Almeirim;Jutaí;Lábrea'],
 ['brasil','Pontos mais altos do Brasil','Altitude, IBGE','Pico da Neblina|Neblina;Pico 31 de Março|31 de Março;Pico da Bandeira|Bandeira;Pedra da Mina;Pico das Agulhas Negras|Agulhas Negras;Pico do Cristal|Cristal;Monte Roraima|Roraima;Morro do Couto|Couto;Pedra do Sino de Itatiaia|Pedra do Sino;Pico dos Três Estados|Três Estados'],
@@ -328,7 +326,7 @@ const RAW = [
 ['ciencia','Metais com maior ponto de fusão','Temperatura de fusão','Tungstênio;Rênio;Ósmio;Tântalo;Molibdênio;Nióbio;Irídio;Rutênio;Háfnio;Tecnécio'],
 ['ciencia','Maiores planetas e planetas anões','Por diâmetro','Júpiter;Saturno;Urano;Netuno;Terra;Vênus;Marte;Mercúrio;Plutão;Éris'],
 
-['mundo','Países com mais Prêmios Nobel','Laureados até 2025','Estados Unidos|EUA;Reino Unido|Inglaterra;Alemanha;França;Suécia;Japão;Rússia|União Soviética|URSS;Canadá;Suíça;Áustria'],
+['curio','Países com mais Prêmios Nobel','Laureados até 2025','Estados Unidos|EUA;Reino Unido|Inglaterra;Alemanha;França;Suécia;Japão;Rússia|União Soviética|URSS;Canadá;Suíça;Áustria'],
 
 ['pop','Maiores bilheterias da história do cinema','Mundial, out/2026 · filmes em cartaz ainda podem subir','Vingadores: Ultimato|Ultimato|Avengers Endgame;Avatar;Homem-Aranha: Brand New Day|Homem-Aranha: Um Novo Dia|Brand New Day|Um Novo Dia;Avatar: O Caminho da Água|O Caminho da Água|Avatar 2;Titanic;Ne Zha 2|Nezha 2;Star Wars: O Despertar da Força|O Despertar da Força|Star Wars 7;Vingadores: Guerra Infinita|Guerra Infinita|Infinity War;Homem-Aranha: Sem Volta para Casa|Sem Volta para Casa|No Way Home;Zootopia 2'],
 ['pop','Consoles mais vendidos da história','Unidades vendidas, out/2026','PlayStation 2|PS2;Nintendo Switch|Switch;Nintendo DS|DS;Game Boy;PlayStation 4|PS4;PlayStation|PS1|PlayStation 1;Wii;PlayStation 5|PS5;PlayStation 3|PS3;Xbox 360'],
@@ -340,6 +338,112 @@ const RAW = [
 
 ['economia','Maiores economias do mundo','PIB nominal, estimativa do FMI para 2026','Estados Unidos|EUA;China;Alemanha;Japão;Reino Unido|Inglaterra;Índia;França;Itália;Rússia;Brasil'],
 ['economia','Maiores empresas do mundo por receita','Fortune Global 500, 2025','Walmart;Amazon;State Grid;Saudi Aramco|Aramco;China National Petroleum|CNPC|PetroChina;Sinopec;UnitedHealth|UnitedHealth Group;Apple;CVS Health|CVS;Berkshire Hathaway|Berkshire'],
+['esporte','Clubes de futebol mais valiosos','Forbes, mai/2026','Real Madrid;Barcelona;Manchester United;Liverpool;Paris Saint-Germain|PSG;Bayern de Munique|Bayern;Manchester City|City;Arsenal;Chelsea;Tottenham'],
+['esporte','Ligas de futebol com maior público médio','Última temporada disponível de cada liga','Bundesliga|Alemão;Premier League|Inglês;Serie A|Italiano|Campeonato Italiano;La Liga|LaLiga|Espanhol;Ligue 1|Francês;Campeonato Argentino|Argentino|Liga Profesional;Brasileirão|Campeonato Brasileiro;MLS|Major League Soccer;2. Bundesliga|Segunda divisão alemã;Liga MX|Mexicano'],
+['esporte','Mais pole positions na Fórmula 1','Até o GP de Singapura de 2026','Lewis Hamilton|Hamilton;Michael Schumacher|Schumacher;Ayrton Senna|Senna;Sebastian Vettel|Vettel;Max Verstappen|Verstappen;Jim Clark|Clark;Alain Prost|Prost;Nigel Mansell|Mansell;Nico Rosberg|Rosberg;Juan Manuel Fangio|Fangio'],
+['esporte','Mais pódios na Fórmula 1','Contagem até 2025','Lewis Hamilton|Hamilton;Michael Schumacher|Schumacher;Max Verstappen|Verstappen;Sebastian Vettel|Vettel;Alain Prost|Prost;Fernando Alonso|Alonso;Kimi Räikkönen|Raikkonen|Kimi;Ayrton Senna|Senna;Rubens Barrichello|Barrichello|Rubinho;Valtteri Bottas|Bottas'],
+['esporte','Países com mais medalhas nas Olimpíadas de Inverno','Total histórico, até 2026','Noruega;Estados Unidos|EUA;Alemanha;Áustria;Canadá;Suécia;União Soviética|URSS;Suíça;Finlândia;Itália'],
+['esporte','Maiores estádios de futebol do mundo','Capacidade de público','Rungrado Primeiro de Maio|Rungrado|Pyongyang;Camp Nou;FNB Stadium|Soccer City;Estádio da Nova Capital Administrativa|Nova Capital;Cotton Bowl;Wembley;Lusail;Estádio Azteca|Azteca;Bukit Jalil;Borg El Arab'],
+['esporte','Mais jogos na história da NBA','Temporada regular, até abr/2026','LeBron James|LeBron;Robert Parish|Parish;Kareem Abdul-Jabbar|Kareem;Vince Carter|Carter;Dirk Nowitzki|Dirk|Nowitzki;John Stockton|Stockton;Karl Malone|Malone;Kevin Garnett|Garnett;Kevin Willis|Willis;Jason Terry|Terry'],
+['esporte','Maiores pontuadores dos playoffs da NBA','Até os playoffs de 2026','LeBron James|LeBron;Michael Jordan|Jordan;Kareem Abdul-Jabbar|Kareem;Kobe Bryant|Kobe;Shaquille O\'Neal|Shaq|Shaquille;Tim Duncan|Duncan;Kevin Durant|Durant;Karl Malone|Malone;Jerry West|West;James Harden|Harden'],
+['esporte','Maiores artilheiros da Premier League','Até out/2025','Alan Shearer|Shearer;Harry Kane|Kane;Wayne Rooney|Rooney;Mohamed Salah|Salah;Andy Cole|Andrew Cole|Cole;Sergio Agüero|Aguero;Frank Lampard|Lampard;Thierry Henry|Henry;Robbie Fowler|Fowler;Jermain Defoe|Defoe'],
+['esporte','Maiores artilheiros de La Liga','Até a temporada 2025–26','Lionel Messi|Messi;Cristiano Ronaldo|CR7|Ronaldo;Telmo Zarra|Zarra;Karim Benzema|Benzema;Hugo Sánchez;Raúl;Alfredo Di Stéfano|Di Stéfano;César Rodríguez|César;Quini;Pahiño'],
+['esporte','Maiores artilheiros da Bundesliga','Até ago/2026','Gerd Müller;Robert Lewandowski|Lewandowski;Klaus Fischer|Fischer;Jupp Heynckes|Heynckes;Manfred Burgsmüller|Burgsmüller;Claudio Pizarro|Pizarro;Ulf Kirsten|Kirsten;Stefan Kuntz|Kuntz;Dieter Müller;Klaus Allofs|Allofs'],
+['esporte','Clubes brasileiros com maior receita','Sports Value, 2025','Flamengo;Palmeiras;Botafogo;São Paulo;Fluminense;Corinthians;Grêmio;Santos;Cruzeiro;Atlético-MG|Atlético Mineiro|Galo'],
+['esporte','Elencos mais valiosos do Brasileirão 2026','Transfermarkt, jan/2026','Palmeiras;Flamengo;Cruzeiro;Bahia;Fluminense;Corinthians;Botafogo;Atlético-MG|Atlético Mineiro|Galo;Bragantino|Red Bull Bragantino;Vasco|Vasco da Gama'],
+['esporte','Mais semanas como nº 1 do tênis feminino','Ranking WTA, até jun/2026','Steffi Graf|Graf;Martina Navratilova|Navratilova;Serena Williams|Serena;Chris Evert|Evert;Martina Hingis|Hingis;Monica Seles|Seles;Iga Świątek|Iga Swiatek|Swiatek;Ashleigh Barty|Barty;Justine Henin|Henin;Lindsay Davenport|Davenport'],
+
+['brasil','Maiores regiões metropolitanas do Brasil','IBGE, estimativa 2019 · Brasília conta como RIDE','São Paulo;Rio de Janeiro;Belo Horizonte|BH;Brasília|DF;Porto Alegre;Fortaleza;Recife;Salvador;Curitiba;Campinas'],
+['brasil','Estados com maior IDH','IDHM 2024','Distrito Federal|DF;São Paulo;Santa Catarina;Paraná;Rio de Janeiro;Rio Grande do Sul;Goiás;Mato Grosso;Minas Gerais;Espírito Santo'],
+['brasil','Nomes de menina mais registrados em 2025','Arpen-Brasil','Helena;Maitê|Maite;Cecília|Cecilia;Maria Cecília|Maria Cecilia;Aurora;Alice;Laura;Antonella;Ísis|Isis;Heloísa|Heloisa'],
+['brasil','Nomes de menino mais registrados em 2025','Arpen-Brasil','Ravi;Miguel;Heitor;Arthur|Artur;Theo|Téo|Teo;Gael;Bernardo;Davi;Noah|Noá;Samuel'],
+['brasil','Brasileiros mais ricos','Forbes Brasil 2026','Eduardo Saverin|Saverin;Vicky Safra|Safra;Jorge Paulo Lemann|Lemann;André Esteves|Esteves;Fernando Moreira Salles;Pedro Moreira Salles;Max Telles|Telles;Miguel Krigsner|Krigsner;Beto Sicupira|Carlos Alberto Sicupira|Sicupira;Ricardo Faria|Faria'],
+['brasil','Maiores bancos do Brasil','Ativos totais, 2025','Itaú|Itaú Unibanco;Banco do Brasil|BB;Bradesco;Caixa|Caixa Econômica Federal;Santander;BTG Pactual|BTG;Sicredi;Sicoob;Safra|Banco Safra;Citibank|Citi'],
+['brasil','Maiores empresas do Brasil por receita','Elos Ayta, 2025','Petrobras;JBS;Itaú|Itaú Unibanco;Banco do Brasil|BB;Bradesco;Vale;Vibra;Raízen;Marfrig;Santander'],
+['brasil','Carros mais vendidos do Brasil em 2025','Automóveis e comerciais leves','Fiat Strada|Strada;Volkswagen Polo|Polo;Fiat Argo|Argo;Volkswagen T-Cross|T-Cross;Hyundai HB20|HB20;Chevrolet Onix|Onix;Hyundai Creta|Creta;Fiat Mobi|Mobi;Volkswagen Saveiro|Saveiro;Jeep Compass|Compass'],
+['brasil','Marcas de carro que mais venderam no Brasil','Fenabrave, 2025','Fiat;Volkswagen|VW;Chevrolet|GM;Hyundai;Toyota;Renault;Jeep;BYD;Honda;Nissan'],
+['brasil','Países com mais brasileiros morando','Itamaraty, 2025','Estados Unidos|EUA;Portugal;Paraguai;Japão;Espanha;Reino Unido|Inglaterra;Alemanha;Itália;Canadá;França'],
+['brasil','Buscas do ano no Google em 2025','Termos em alta no Brasil','Mundial de Clubes;PSG|Paris Saint-Germain;Preta Gil;Chelsea;Papa;Bayern;Labubu;Charlie Kirk;Caso Vitória;Bobbie Goods'],
+
+['economia','Pessoas mais ricas do mundo','Forbes, out/2026','Elon Musk|Musk;Jeff Bezos|Bezos;Larry Page|Page;Michael Dell|Dell;Sergey Brin|Brin;Mark Zuckerberg|Zuckerberg;Jensen Huang|Huang;Larry Ellison|Ellison;Steve Ballmer|Ballmer;Warren Buffett|Buffett'],
+['economia','Maiores reservas internacionais','Países e territórios, 2026','China;Japão;Suíça;Rússia;Índia;Taiwan;Arábia Saudita;Hong Kong;Coreia do Sul|Coreia;Singapura|Cingapura'],
+['economia','Maiores exportadores do mundo','Exportação de mercadorias, ONU 2023','China;Estados Unidos|EUA;Alemanha;Holanda|Países Baixos;Japão;França;Itália;Coreia do Sul|Coreia;Índia;México'],
+['economia','Países com mais bilionários','Forbes, mar/2026 · países e territórios','Estados Unidos|EUA;China;Índia;Alemanha;Rússia;Itália;Canadá;Hong Kong;Brasil;Taiwan'],
+['economia','Montadoras que mais venderam no mundo','2025','Toyota;Volkswagen|VW;Hyundai|Hyundai-Kia|Kia;General Motors|GM;Stellantis;BYD;SAIC;Ford;Geely;Honda'],
+['economia','Maiores economias por paridade de compra','PIB (PPC), estimativa do FMI para 2026','China;Estados Unidos|EUA;Índia;Rússia;Japão;Alemanha;Indonésia;Brasil;Reino Unido|Inglaterra;França'],
+['economia','Maiores bolsas de valores do mundo','Valor de mercado, set/2026','Nasdaq;Bolsa de Nova York|NYSE|New York Stock Exchange;Bolsa de Xangai|Xangai;Euronext;Bolsa de Tóquio|Tóquio|Japan Exchange;Bolsa de Shenzhen|Shenzhen;Bolsa de Hong Kong|Hong Kong;Bolsa de Bombaim|BSE|Bombaim;NSE|National Stock Exchange|Bolsa Nacional da Índia;Bolsa de Taiwan|Taiwan'],
+['economia','Maiores companhias aéreas do mundo','Passageiros transportados, 2024','American Airlines|American;Delta;Ryanair;United Airlines|United;Southwest;Grupo Lufthansa|Lufthansa;IAG|British Airways|Iberia;IndiGo;Air France-KLM|Air France|KLM;Turkish Airlines|Turkish'],
+['economia','Maiores bancos do mundo','Ativos totais, S&P 2026','ICBC|Industrial and Commercial Bank of China;Agricultural Bank of China|Banco Agrícola da China;China Construction Bank|CCB;Bank of China|Banco da China;JPMorgan|JPMorgan Chase;Bank of America;BNP Paribas|BNP;HSBC;Crédit Agricole;Postal Savings Bank of China|Postal Savings'],
+['economia','Portos com mais contêineres','TEU, 2024','Xangai;Singapura|Cingapura;Ningbo-Zhoushan|Ningbo;Shenzhen;Qingdao;Guangzhou|Cantão;Busan;Tianjin;Jebel Ali|Dubai;Port Klang|Klang'],
+['economia','Maiores produtores de aço','worldsteel, 2025','China;Índia;Estados Unidos|EUA;Japão;Rússia;Coreia do Sul|Coreia;Turquia;Alemanha;Brasil;Irã'],
+['economia','Países que mais consomem petróleo','Barris por dia','Estados Unidos|EUA;China;Índia;Rússia;Arábia Saudita;Brasil;Japão;Coreia do Sul|Coreia;Irã;Canadá'],
+['economia','Maiores farmacêuticas do mundo','Receita, 2025','Johnson & Johnson|J&J;Sinopharm;Roche;Eli Lilly|Lilly;Merck|MSD;Pfizer;AbbVie;AstraZeneca;Novartis;Sanofi'],
+['economia','Maiores produtores de carvão','2024','China;Índia;Indonésia;Rússia;Austrália;Estados Unidos|EUA;África do Sul;Cazaquistão;Alemanha;Polônia'],
+['economia','Maiores produtores de arroz','FAO, 2022','Índia;China;Bangladesh;Indonésia;Vietnã;Tailândia;Mianmar|Birmânia;Filipinas;Camboja;Paquistão'],
+['economia','Maiores produtores de trigo','FAO, 2022','China;Índia;Rússia;Estados Unidos|EUA;Austrália;França;Canadá;Paquistão;Alemanha;Argentina'],
+['economia','Maiores produtores de milho','FAO, 2022 · União Europeia não conta','Estados Unidos|EUA;China;Brasil;Argentina;Índia;México;Ucrânia;Indonésia;África do Sul;Rússia'],
+['economia','Países que mais faturam com turismo','Receitas de turismo internacional, 2025','Estados Unidos|EUA;Espanha;Reino Unido|Inglaterra;França;Japão;Itália;Turquia;Austrália;China;Canadá'],
+
+['ciencia','Elementos mais abundantes na água do mar','Por massa','Oxigênio;Hidrogênio;Cloro;Sódio;Magnésio;Enxofre;Cálcio;Potássio;Bromo;Carbono'],
+['ciencia','Elementos com maior ponto de ebulição','Carbono não conta (sublima)','Tungstênio;Rênio;Tântalo;Ósmio;Tório;Nióbio;Molibdênio;Háfnio;Zircônio;Tecnécio'],
+['ciencia','Maiores luas de Saturno','Por diâmetro','Titã;Reia;Jápeto;Dione;Tétis;Encélado;Mimas;Hipérion;Febe;Jano'],
+['ciencia','Metais mais abundantes na crosta terrestre','Por massa','Alumínio;Ferro;Cálcio;Sódio;Magnésio;Potássio;Titânio;Manganês;Bário;Estrôncio'],
+['ciencia','Estrelas mais próximas do Sol','Sistemas estelares, sem anãs marrons','Alfa Centauri|Alpha Centauri|Próxima Centauri;Estrela de Barnard|Barnard;Wolf 359;Lalande 21185;Sírius|Sirius;Gliese 65|BL Ceti;Ross 154;Ross 248;Epsilon Eridani|Épsilon Eridani;Gliese 887'],
+['ciencia','Cavernas mais longas do mundo','Extensão mapeada','Mammoth Cave|Mammoth;Sistema Ox Bel Ha|Ox Bel Ha;Shuanghedong;Sistema Sac Actun|Sac Actun|Dos Ojos;Jewel Cave|Jewel;Wind Cave;Clearwater;Optymistychna|Otimista;Lechuguilla;Sistema del Alto Tejuelo|Alto Tejuelo'],
+['ciencia','Lagos mais profundos do mundo','Profundidade máxima · Cáspio e Vostok contam','Baikal;Tanganica|Tanganyika;Mar Cáspio|Cáspio;Lago Vostok|Vostok;O\'Higgins-San Martín|O\'Higgins|San Martín;Viedma;Lago Argentino|Argentino;Lago Malawi|Malawi|Niassa;Issyk-Kul|Issyk Kul;Grande Lago do Escravo|Lago do Escravo'],
+['ciencia','Fossas oceânicas mais profundas','Profundidade máxima','Fossa das Marianas|Marianas|Challenger;Fossa de Tonga|Tonga;Fossa das Filipinas|Filipinas;Fossa das Curilas|Curilas|Kuril-Kamchatka|Kamchatka;Fossa de Kermadec|Kermadec;Fossa de Izu-Ogasawara|Izu-Ogasawara|Izu;Fossa do Japão|Japão;Fossa de Porto Rico|Porto Rico;Fossa das Sandwich do Sul|Sandwich do Sul;Fossa do Peru-Chile|Peru-Chile|Atacama'],
+['ciencia','Montanhas mais altas dos Andes','Altitude','Aconcágua;Ojos del Salado;Monte Pissis|Pissis;Huascarán;Bonete;Tres Cruces;Llullaillaco;Mercedario;Walther Penck|Cazadero;Incahuasi'],
+['ciencia','Países que mais produzem eletricidade','TWh, 2025','China;Estados Unidos|EUA;Índia;Rússia;Japão;Brasil;Canadá;Coreia do Sul|Coreia;França;Alemanha'],
+
+['pop','Diretores com maior bilheteria','Soma mundial da carreira, out/2026','Steven Spielberg|Spielberg;James Cameron|Cameron;Christopher Nolan|Nolan;Irmãos Russo|Russo|Anthony e Joe Russo;Peter Jackson;Michael Bay|Bay;David Yates|Yates;Ridley Scott;Tim Burton|Burton;Andrew Stanton|Stanton'],
+['pop','Franquias que mais faturaram na história','Receita total estimada (filmes, jogos, produtos)','Pokémon;Mickey Mouse|Mickey;Ursinho Pooh|Winnie the Pooh|Pooh;Star Wars;Princesas Disney|Disney Princess;Anpanman;Marvel|MCU|Universo Marvel;Barbie;Harry Potter|Wizarding World|Mundo Bruxo;Hello Kitty'],
+['pop','Maiores bilheterias de 2025','Mundial','Ne Zha 2;Zootopia 2;Avatar: Fogo e Cinzas|Avatar 3|Fogo e Cinzas;Lilo & Stitch|Lilo e Stitch;Um Filme Minecraft|Minecraft;Jurassic World: Recomeço|Jurassic World;Demon Slayer: Castelo Infinito|Demon Slayer|Kimetsu no Yaiba;Como Treinar o Seu Dragão|Como Treinar seu Dragão;F1: O Filme|F1;Superman'],
+['pop','Artistas mais ouvidos no Brasil em 2025','Spotify Wrapped','Henrique & Juliano|Henrique e Juliano;Grupo Menos é Mais|Menos é Mais;MC Ryan SP|Ryan SP;Jorge & Mateus|Jorge e Mateus;MC IG;Zé Neto & Cristiano|Zé Neto e Cristiano;Matheus & Kauan|Matheus e Kauan;MC Tuto;Natanzinho Lima|Natanzinho;Filipe Ret'],
+['pop','Artistas mais ouvidos do mundo em 2025','Spotify Wrapped','Bad Bunny;Taylor Swift;The Weeknd|Weeknd;Drake;Billie Eilish;Kendrick Lamar;Bruno Mars;Ariana Grande;Arijit Singh;Fuerza Regida'],
+['pop','Músicas mais ouvidas do mundo em 2025','Spotify Wrapped','Die With A Smile;Birds of a Feather;APT.|APT;Ordinary;DtMF;Back to Friends;Golden;Luther;That\'s So True;Wildflower'],
+['pop','Filmes mais vistos da Netflix','Visualizações nos primeiros 91 dias','Guerreiras do K-Pop|KPop Demon Hunters|K-Pop Demon Hunters;Alerta Vermelho|Red Notice;Bagagem de Risco|Carry-On;Não Olhe para Cima|Don\'t Look Up;O Projeto Adam|The Adam Project;Caixa de Pássaros|Bird Box;De Volta à Ação|Back in Action;O Mundo Depois de Nós|Leave the World Behind;War Machine;Swapped'],
+['pop','Maiores bilheterias de animação','Mundial, set/2026','Ne Zha 2;Zootopia 2;Divertida Mente 2|Inside Out 2;O Rei Leão|Rei Leão;Frozen 2|Frozen II;Super Mario Bros. O Filme|Super Mario;Frozen;Os Incríveis 2|Incríveis 2;Minions;Toy Story 5'],
+['pop','Franquias de games mais vendidas','Unidades vendidas','Mario|Super Mario;Tetris;Pokémon;Call of Duty|COD;Grand Theft Auto|GTA;Minecraft;FIFA|EA Sports FC;Assassin\'s Creed;Resident Evil;Final Fantasy'],
+['pop','Atores com maior bilheteria','Soma mundial da carreira, jan/2026','Zoe Saldaña|Zoe Saldana;Scarlett Johansson|Scarlett;Samuel L. Jackson|Samuel L Jackson;Robert Downey Jr.|Robert Downey|RDJ;Chris Pratt|Pratt;Tom Cruise|Cruise;Chris Hemsworth|Hemsworth;Vin Diesel|Diesel;Chris Evans|Evans;Dwayne Johnson|The Rock'],
+['pop','Álbuns mais ouvidos do mundo em 2025','Spotify Wrapped','DeBÍ TiRAR MáS FOToS|Debi Tirar Mas Fotos;Guerreiras do K-Pop (trilha sonora)|KPop Demon Hunters;Hit Me Hard and Soft;SOS Deluxe: Lana|SOS;Short n\' Sweet|Short n Sweet;Mayhem;You\'ll Be Alright, Kid;I\'m the Problem;GNX;Un Verano Sin Ti'],
+['pop','Canais brasileiros com mais inscritos no YouTube','Abr/2026','Bispo Bruno Leonardo|Bruno Leonardo;KondZilla;Luccas Neto;Maria Clara & JP|Maria Clara e JP;Felipe Neto;Você Sabia?|Você Sabia;Enaldinho;Whindersson Nunes|Whindersson;GR6 Explode|GR6;Natan por Aí|Natan'],
+['pop','Brasileiros mais seguidos no Instagram','Mai/2026','Neymar;Ronaldinho Gaúcho|Ronaldinho;Marcelo;Anitta;Vini Jr.|Vinícius Júnior|Vini Jr;Virginia Fonseca|Virginia;Whindersson Nunes|Whindersson;Tatá Werneck|Tatá;Larissa Manoela;Maisa|Maísa'],
+['pop','Artistas com as turnês mais lucrativas','Melhor turnê de cada artista','Taylor Swift;Coldplay;The Weeknd|Weeknd;Elton John;Ed Sheeran;U2;Bruce Springsteen|Springsteen;Metallica;Harry Styles;Pink|P!nk'],
+['pop','Pintores com as obras mais caras já vendidas','Melhor venda de cada artista, preço nominal','Leonardo da Vinci|Da Vinci|Leonardo;Willem de Kooning|De Kooning;Paul Cézanne|Cézanne;Gustav Klimt|Klimt;Paul Gauguin|Gauguin;Jackson Pollock|Pollock;Rembrandt;Andy Warhol|Warhol;Mark Rothko|Rothko;Pablo Picasso|Picasso'],
+
+['curio','Melhores cidades para viver','EIU Global Liveability Index 2025','Copenhague|Copenhagen;Viena;Zurique|Zurich;Melbourne;Genebra;Sydney|Sidney;Osaka;Auckland;Adelaide;Vancouver'],
+['curio','Países com mais idiomas vivos','Ethnologue','Papua-Nova Guiné;Indonésia;Nigéria;Índia;Estados Unidos|EUA;Austrália;China;México;Camarões;Brasil'],
+['curio','Raças de gato mais populares','CFA, ranking 2026','Maine Coon;Ragdoll;Persa;Exótico|Exotic;Devon Rex;Abissínio;British Shorthair|Britânico de pelo curto;Siberiano;American Shorthair|Americano de pelo curto;Azul Russo|Russian Blue'],
+['curio','Sites mais acessados do mundo','Similarweb, ago/2026','Google;YouTube;Facebook;Instagram;ChatGPT;X|Twitter;Reddit;Bing;TikTok;WhatsApp'],
+['curio','Países com mais lojas Starbucks','Abr/2026','Estados Unidos|EUA;China;Coreia do Sul|Coreia;Japão;Canadá;Reino Unido|Inglaterra;Turquia;Indonésia;Tailândia;Filipinas'],
+['curio','Países com mais McDonald\'s','Restaurantes em operação, dez/2025','Estados Unidos|EUA;China;Japão;França;Canadá;Reino Unido|Inglaterra;Alemanha;Brasil;Austrália;Filipinas'],
+['curio','Idiomas mais estudados no Duolingo','Duolingo Language Report 2025','Inglês;Espanhol;Francês;Japonês;Alemão;Coreano;Italiano;Chinês|Mandarim;Português;Hindi'],
+['curio','Apps mais baixados do mundo em 2025','App Store e Google Play','ChatGPT;Instagram;TikTok;WhatsApp;CapCut;TikTok Lite;Netflix;Facebook;Temu;Snapchat'],
+['curio','Cidades mais visitadas por turistas estrangeiros','Euromonitor, 2025','Bangkok;Hong Kong;Londres;Macau;Istambul;Dubai;Meca;Antália|Antalya;Paris;Kuala Lumpur'],
+['curio','Países mais pacíficos do mundo','Global Peace Index 2025','Islândia;Irlanda;Nova Zelândia;Áustria;Suíça;Singapura|Cingapura;Portugal;Dinamarca;Eslovênia;Finlândia'],
+['curio','Países com mais usuários de Instagram','Out/2025','Índia;Estados Unidos|EUA;Brasil;Indonésia;Japão;Turquia;México;Reino Unido|Inglaterra;Alemanha;Argentina'],
+['curio','Cidades mais caras para viver','Numbeo, meio de 2025','Zurique|Zurich;Genebra;Basileia;Lausanne;Lugano;Berna;Nova York|New York;Reykjavik;Honolulu;San Francisco|São Francisco'],
+['curio','Cidades mais populosas do mundo em 2025','ONU, World Urbanization Prospects 2025','Jacarta;Daca|Dhaka;Tóquio;Cairo;Nova Délhi|Délhi|Delhi;Xangai;Guangzhou|Cantão;Manila;Calcutá|Kolkata;Seul'],
+['curio','Parques temáticos mais visitados','Público em 2024','Magic Kingdom;Disneyland;Universal Studios Japan|Universal Japão;Tokyo Disneyland|Disneyland Tóquio;Shanghai Disneyland|Disneyland Xangai;Chimelong Ocean Kingdom|Chimelong;Tokyo DisneySea|DisneySea;Epcot;Hollywood Studios;Disneyland Paris'],
+['curio','Cidades com mais arranha-céus','Prédios com 150 m ou mais, jul/2026','Hong Kong;Shenzhen;Nova York|New York;Mumbai|Bombaim;Dubai;Guangzhou|Cantão;Wuhan;Xangai;Bangkok;Kuala Lumpur'],
+['curio','Estátuas mais altas do mundo','Altura da estátua, sem pedestal','Estátua da Unidade|Statue of Unity|Unidade;Buda do Templo da Primavera|Spring Temple Buddha;Laykyun Sekkya;Vishwas Swaroopam;Ushiku Daibutsu|Ushiku;Dizang do Monte Jiuhua|Dizang;Grande Buda da Tailândia|Buda da Tailândia;Sendai Daikannon|Sendai;Dai Kannon de Kita no Miyako|Kita no Miyako;A Pátria Mãe Chama|Mãe Pátria|Motherland Calls'],
+['curio','Metrôs mais movimentados do mundo','Passageiros por ano · métodos de contagem variam','Xangai;Pequim;Guangzhou|Cantão;Shenzhen;Seul;Tóquio;Délhi|Nova Délhi|Delhi;Moscou;Chengdu;Hong Kong'],
+['curio','Maior expectativa de vida','Países e territórios, estimativa 2026','Mônaco;San Marino;Hong Kong;Japão;Coreia do Sul|Coreia;São Bartolomeu|Saint-Barthélemy;Andorra;Polinésia Francesa;Suíça;Austrália'],
+
+['bar','Países que mais consomem vinho','OIV, 2024','Estados Unidos|EUA;França;Itália;Alemanha;Reino Unido|Inglaterra;Espanha;Rússia;Argentina;Portugal;China'],
+['bar','Países que mais consomem cerveja','Volume total, Kirin 2024','China;Estados Unidos|EUA;Brasil;México;Rússia;Alemanha;África do Sul;Vietnã;Reino Unido|Inglaterra;Espanha'],
+['bar','Países que mais bebem cerveja por pessoa','Litros por habitante, Kirin 2024','Tchéquia|República Tcheca;Lituânia;Áustria;Irlanda;Croácia;Estônia;Espanha;Eslovênia;Romênia;Alemanha'],
+['bar','Países que mais tomam chá por pessoa','Consumo por habitante (estimativa)','Turquia;Irlanda;Azerbaijão;Reino Unido|Inglaterra;Paquistão;Irã;Rússia;Marrocos;Nova Zelândia;Chile'],
+['bar','Países que mais consomem álcool por pessoa','OMS, 2019 · litros de álcool puro, 15+ anos','Romênia;Letônia;Geórgia;Seychelles;Tchéquia|República Tcheca;Ilhas Cook;Estônia;Uganda;Áustria;Polônia'],
+['bar','Países com mais área de vinhedos','OIV, 2024','Espanha;França;China;Itália;Turquia;Estados Unidos|EUA;Argentina;Romênia;Índia;Portugal'],
+['bar','Maiores exportadores de vinho','Valor exportado, OIV 2024','França;Itália;Espanha;Austrália;Chile;Estados Unidos|EUA;Nova Zelândia;Alemanha;Portugal;Argentina'],
+['bar','Maiores produtores de cevada','Base da cerveja · FAO, 2022','Rússia;Austrália;França;Alemanha;Canadá;Turquia;Reino Unido|Inglaterra;Espanha;Ucrânia;Argentina'],
+['bar','Maiores produtores de limão','Base da caipirinha · limões e limas, FAO','Índia;México;China;Argentina;Brasil;Turquia;Estados Unidos|EUA;Espanha;África do Sul;Irã'],
+['bar','Maiores produtores de lúpulo','Tempero da cerveja · dados de 2021','Estados Unidos|EUA;Alemanha;Tchéquia|República Tcheca;China;Polônia;Eslovênia;Austrália;Nova Zelândia;Espanha;Reino Unido|Inglaterra'],
+['bar','Maiores cervejarias do mundo','Volume produzido, 2024','AB InBev|Ambev|Anheuser-Busch;Heineken;China Resources Snow|CR Snow|Snow;Carlsberg;Molson Coors;Tsingtao;Asahi;Castel|BGI|Groupe Castel;Yanjing;Anadolu Efes|Efes'],
+['bar','Uísques escoceses mais vendidos','Caixas vendidas em 2024 · Grant\'s não divulgou','Johnnie Walker;Ballantine\'s|Ballantines;Chivas Regal|Chivas;Dewar\'s|Dewars;William Lawson\'s|William Lawson;Black & White|Black and White;William Peel;Label 5;J&B|JB;Buchanan\'s|Buchanans'],
+['bar','Maiores produtores de cacau','Base do chocolate quente · FAO, 2024','Costa do Marfim;Indonésia;Gana;Equador;Nigéria;Camarões;Brasil;Peru;Serra Leoa;Colômbia'],
+['bar','Marcas de cerveja mais valiosas','Kantar BrandZ 2025 · 6º a 8º sem ordem divulgada','Corona;Budweiser;Heineken;Modelo;Michelob Ultra|Michelob;Bud Light;Brahma;Skol;Stella Artois|Stella;Guinness'],
 ];
 
 const TOPS = RAW.map((r,i)=>({id:i,c:r[0],t:r[1],n:r[2],a:r[3].split(';').map(x=>x.split('|').map(s=>s.trim()))}));
@@ -926,7 +1030,6 @@ try{ window.claude?.hot?.snapshot?.(()=>({S,H})); }catch(e){}
 window.claude?.hot?.ready ? window.claude.hot.ready(start) : start(window.claude?.hot?.data ?? {});
 })();
 </script>
-
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});}</script>
 </body>
 </html>

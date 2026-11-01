@@ -16,7 +16,7 @@ Jogo de roda para celular. O app sorteia um ranking com 10 respostas escondidas.
 
 - **Quem confere as respostas:** o próprio app (você digita a resposta e ele confere sem mostrar a lista) ou um juiz (ele vê as 10 respostas e decide).
 - **Pular este top:** sorteia outro tema e recomeça a rodada sem mexer no placar.
-- **Escolher o top:** abre a lista dos 100 tops, com busca, para o grupo decidir o tema da rodada ou da próxima.
+- **Escolher o top:** abre a lista dos 200 tops, com busca, para o grupo decidir o tema da rodada ou da próxima.
 - **Desfazer:** volta o último lance.
 - **Modo Drinks:** só bebe quem sai da rodada.
   - Perdeu uma dúvida como quem respondeu: 1 gole.
@@ -27,7 +27,7 @@ Jogo de roda para celular. O app sorteia um ranking com 10 respostas escondidas.
 
 ## Conteúdo
 
-São 100 tops ordenados por métrica (área, população, vendas, gols, ouvintes etc.), divididos em Mundo, Brasil, Esportes, Ciência, Cultura pop, Economia, Curiosidades e Bar & café. Cada card mostra a fonte e o ano dos dados. Os rankings que mudam com o tempo refletem os dados de outubro de 2026.
+São 200 tops ordenados por métrica (área, população, vendas, gols, ouvintes etc.), divididos em Mundo, Brasil, Esportes, Ciência, Cultura pop, Economia, Curiosidades e Bar & café. Cada card mostra a fonte e o ano dos dados. Os rankings que mudam com o tempo refletem os dados de outubro de 2026.
 
 ## Como instalar no celular
 
